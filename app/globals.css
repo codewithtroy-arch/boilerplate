@@ -4,16 +4,36 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
-    --primary: 222 89% 55%;
-    --primary-foreground: 0 0% 100%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
-    --border: 214 32% 91%;
+    --background: 45 60% 98%;
+    --foreground: 0 0% 10%;
+    --primary: 152 61% 28%;
+    --primary-foreground: 45 60% 98%;
+    --muted: 45 80% 93%;
+    --muted-foreground: 30 15% 38%;
+    --border: 0 0% 10%;
   }
 
   body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Thick hand-drawn-signboard outline, used deliberately on catalog UI. */
+  .signboard-border {
+    border: 3px solid theme('colors.ink');
+    box-shadow: 4px 4px 0 theme('colors.ink');
+  }
+
+  /* Circular price-sticker badge, like a hand-stamped market price tag. */
+  .price-sticker {
+    font-family: var(--font-tag);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid theme('colors.ink');
+    border-radius: 9999px;
+    transform: rotate(-4deg);
+  }
+}
+
