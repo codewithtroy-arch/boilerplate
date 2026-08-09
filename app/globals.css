@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --background: 45 60% 98%;
-    --foreground: 0 0% 10%;
-    --primary: 152 61% 28%;
-    --primary-foreground: 45 60% 98%;
-    --muted: 45 80% 93%;
-    --muted-foreground: 30 15% 38%;
-    --border: 0 0% 10%;
+    --background: 30 33% 97%;
+    --foreground: 25 10% 15%;
+    --primary: 355 22% 55%;
+    --primary-foreground: 30 33% 97%;
+    --muted: 30 20% 93%;
+    --muted-foreground: 25 10% 40%;
+    --border: 30 15% 85%;
   }
 
   body {
@@ -19,21 +19,26 @@
 }
 
 @layer utilities {
-  /* Thick hand-drawn-signboard outline, used deliberately on catalog UI. */
-  .signboard-border {
-    border: 3px solid theme('colors.ink');
-    box-shadow: 4px 4px 0 theme('colors.ink');
+  /* Quiet, premium card treatment: thin hairline border, soft shadow. */
+  .refined-card {
+    border: 1px solid theme('colors.ink' / 12%);
+    box-shadow: 0 1px 2px theme('colors.ink' / 4%), 0 8px 24px theme('colors.ink' / 6%);
   }
 
-  /* Circular price-sticker badge, like a hand-stamped market price tag. */
-  .price-sticker {
-    font-family: var(--font-tag);
+  /* Fine gold seal — for the authenticity mark, not a stamped sticker. */
+  .gold-seal {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border: 3px solid theme('colors.ink');
+    border: 1px solid theme('colors.gold');
     border-radius: 9999px;
-    transform: rotate(-4deg);
+  }
+
+  .gold-seal::before {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    border: 1px solid theme('colors.gold' / 50%);
+    border-radius: 9999px;
   }
 }
-

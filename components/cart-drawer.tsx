@@ -18,59 +18,57 @@ export function CartDrawer() {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="signboard-border fixed bottom-5 right-5 z-40 rounded-full bg-chili px-5 py-3 font-display text-sm text-paper transition-transform active:scale-95"
+        className="refined-card fixed bottom-6 right-6 z-40 rounded-full bg-ink px-6 py-3 text-sm font-medium tracking-wide text-paper"
       >
-        Cart {count > 0 && `(${count})`}
+        Bag {count > 0 && `(${count})`}
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-ink/40">
-          <div className="flex h-full w-full max-w-sm flex-col gap-4 border-l-[3px] border-ink bg-paper p-4">
-            <div className="flex items-center justify-between border-b-2 border-dashed border-ink/30 pb-3">
-              <h2 className="font-display text-lg text-ink">Your order</h2>
+        <div className="fixed inset-0 z-50 flex justify-end bg-ink/30">
+          <div className="flex h-full w-full max-w-sm flex-col gap-5 bg-paper p-6">
+            <div className="flex items-center justify-between border-b border-ink/10 pb-4">
+              <h2 className="font-display text-2xl italic text-ink">Your bag</h2>
               <button
                 onClick={() => setOpen(false)}
-                className="rounded-md border-2 border-ink px-2 py-1 text-xs font-semibold"
+                className="text-sm text-muted-foreground underline"
               >
                 Close
               </button>
             </div>
 
             {items.length === 0 ? (
-              <p className="text-sm text-muted-foreground">
-                Cart&apos;s empty — go add something tasty.
-              </p>
+              <p className="text-sm text-muted-foreground">Your bag is empty.</p>
             ) : (
-              <div className="flex flex-1 flex-col gap-3 overflow-y-auto">
+              <div className="flex flex-1 flex-col gap-4 overflow-y-auto">
                 {items.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between gap-2 border-b border-dashed border-ink/20 pb-2 font-tag text-xs"
+                    className="flex items-center justify-between gap-2 border-b border-ink/5 pb-3"
                   >
-                    <div className="flex-1 font-body">
-                      <p className="text-sm font-semibold text-ink">{item.name}</p>
-                      <p className="text-muted-foreground">
+                    <div className="flex-1">
+                      <p className="text-sm font-medium text-ink">{item.name}</p>
+                      <p className="text-xs text-muted-foreground">
                         ₦{item.price.toLocaleString()} each
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                        className="h-6 w-6 rounded border-2 border-ink font-bold"
+                        className="h-6 w-6 rounded-full border border-ink/20 text-xs"
                       >
-                        -
+                        −
                       </button>
-                      <span className="w-4 text-center">{item.quantity}</span>
+                      <span className="w-4 text-center text-sm">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                        className="h-6 w-6 rounded border-2 border-ink font-bold"
+                        className="h-6 w-6 rounded-full border border-ink/20 text-xs"
                       >
                         +
                       </button>
                     </div>
                     <button
                       onClick={() => removeItem(item.id)}
-                      className="font-body text-chili"
+                      className="text-xs text-blush underline"
                     >
                       Remove
                     </button>
@@ -80,14 +78,14 @@ export function CartDrawer() {
             )}
 
             {items.length > 0 && (
-              <div className="space-y-2 border-t-2 border-dashed border-ink/30 pt-3">
-                <div className="flex justify-between font-tag text-base font-bold text-ink">
-                  <span>TOTAL</span>
+              <div className="space-y-3 border-t border-ink/10 pt-4">
+                <div className="flex justify-between text-sm font-medium text-ink">
+                  <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
                 <button
                   onClick={handleCheckout}
-                  className="signboard-border w-full rounded-md bg-leaf px-3 py-2.5 text-sm font-semibold text-paper transition-transform active:scale-95"
+                  className="w-full rounded-md bg-ink px-3 py-3 text-sm font-medium tracking-wide text-paper transition-colors hover:bg-blush"
                 >
                   Checkout via WhatsApp
                 </button>
@@ -95,7 +93,7 @@ export function CartDrawer() {
                   onClick={clear}
                   className="w-full text-center text-xs text-muted-foreground underline"
                 >
-                  Clear cart
+                  Clear bag
                 </button>
               </div>
             )}

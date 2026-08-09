@@ -1,24 +1,18 @@
 import type { Metadata, Viewport } from 'next';
-import { Alfa_Slab_One, Work_Sans, Space_Mono } from 'next/font/google';
+import { Cormorant_Garamond, Manrope } from 'next/font/google';
 import './globals.css';
 import { ServiceWorkerRegister } from '@/components/service-worker-register';
 
-const display = Alfa_Slab_One({
+const display = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: '400',
+  weight: ['500', '600'],
   variable: '--font-display',
 });
 
-const body = Work_Sans({
+const body = Manrope({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
   variable: '--font-body',
-});
-
-const tag = Space_Mono({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  variable: '--font-tag',
 });
 
 export const metadata: Metadata = {
@@ -48,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable} ${tag.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="min-h-screen font-body antialiased">
         {children}
         <ServiceWorkerRegister />

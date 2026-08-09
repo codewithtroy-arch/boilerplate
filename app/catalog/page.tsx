@@ -18,22 +18,22 @@ export default async function CatalogPage() {
   return (
     <CartProvider>
       <main className="min-h-screen bg-paper pb-28">
-        <header className="relative border-b-[3px] border-ink bg-sun px-4 py-6">
-          <div className="price-sticker absolute right-4 top-4 h-16 w-16 rotate-6 border-leaf bg-paper p-1 text-center text-[10px] font-bold leading-tight text-leaf">
-            ✓ 100%
+        <header className="relative border-b border-ink/10 px-6 py-10 text-center">
+          <div className="gold-seal relative mx-auto mb-4 h-14 w-14 text-[9px] font-medium uppercase tracking-widest text-gold">
+            100%
             <br />
-            ORIGINAL
+            Original
           </div>
 
-          <h1 className="max-w-[70%] font-display text-3xl leading-none text-ink">
+          <h1 className="font-display text-4xl italic text-ink">
             {siteConfig.businessName}
           </h1>
-          <p className="mt-1 max-w-[70%] text-sm text-ink/70">
+          <p className="mt-2 text-sm text-muted-foreground">
             {siteConfig.tagline} — order straight to WhatsApp
           </p>
         </header>
 
-        <div className="mx-auto max-w-2xl p-4">
+        <div className="mx-auto max-w-2xl p-5">
           <ProductGrid products={products ?? []} />
         </div>
 

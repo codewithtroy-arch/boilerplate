@@ -20,17 +20,17 @@ const config: Config = {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        // Signboard palette — used deliberately in the catalog/cart UI.
-        ink: '#1A1A1A',
-        paper: '#FFFCF4',
-        sun: '#FFC93C',
-        chili: '#E63946',
-        leaf: '#1F7A43',
+        // Premium skincare palette — quiet ivory base, blush + sage accents,
+        // a fine gold line reserved for the authenticity seal.
+        ink: '#2B2622',
+        paper: '#FBF6F1',
+        blush: '#B97A82',
+        sage: '#7C8A6E',
+        gold: '#A98240',
       },
       fontFamily: {
         display: ['var(--font-display)'],
         body: ['var(--font-body)'],
-        tag: ['var(--font-tag)'],
       },
       borderRadius: {
         lg: '0.75rem',
