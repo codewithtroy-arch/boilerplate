@@ -95,6 +95,35 @@ as a paid add-on per client rather than the default, since it adds app
 store fees ($99/yr Apple, $25 one-time Google) and a release pipeline on
 top of the PWA.
 
+## Paystack payment (Catalog app)
+
+Checkout now collects real payment before the WhatsApp handoff: customer
+enters email → pays via Paystack's popup → payment is verified on the
+server → WhatsApp order message includes the payment reference as proof.
+
+**Setup:**
+1. Sign up at [paystack.com](https://paystack.com), go to **Settings → API
+   Keys & Webhooks**. Copy the **Test Public Key** (`pk_test_...`) and
+   **Test Secret Key** (`sk_test_...`) — use test keys while building.
+2. Add both as environment variables — locally in `.env.local`, and in
+   Vercel → Settings → Environment Variables:
+   - `NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY` = the public key
+   - `PAYSTACK_SECRET_KEY` = the secret key (never share this one, never
+     prefix it with `NEXT_PUBLIC_`)
+3. Redeploy if added after your last deploy.
+4. Test the flow at `/catalog`: add items, open the bag, enter any email,
+   click Pay. Use Paystack's test card: card number `4084084084084081`,
+   any future expiry date, CVV `408`, PIN `0000`, OTP `123456`.
+5. Once it works end to end, go live: in Paystack, complete their business
+   verification, switch to **Live** keys, and swap the env vars in Vercel
+   (Live Public Key and Live Secret Key), then redeploy. Real payments only
+   flow once you're on live keys.
+
+**How it stays safe:** the secret key only ever runs on the server (inside
+`app/api/paystack/verify/route.ts`) — it's never sent to the browser. The
+order is only treated as paid after that server route confirms it with
+Paystack directly, not just from the popup closing.
+
 ## Catalog & WhatsApp Checkout app
 
 The `/catalog` route is a working first version: product grid → cart →

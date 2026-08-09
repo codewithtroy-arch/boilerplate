@@ -1,11 +1,17 @@
 import type { CartItem } from './cart-context';
+import { siteConfig } from './site-config';
 
 /**
  * Builds a wa.me link pre-filled with a clean, structured order summary.
  * Opening it hands the merchant a ready-to-confirm message instead of a
- * back-and-forth chat.
+ * back-and-forth chat. Pass paymentReference once Paystack has confirmed
+ * payment, so the merchant knows it's already paid for.
  */
-export function buildWhatsAppOrderLink(items: CartItem[], total: number) {
+export function buildWhatsAppOrderLink(
+  items: CartItem[],
+  total: number,
+  paymentReference?: string
+) {
   const merchantNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
   if (!merchantNumber) {
@@ -15,7 +21,7 @@ export function buildWhatsAppOrderLink(items: CartItem[], total: number) {
   }
 
   const lines = [
-    'New order:',
+    `New order — ${siteConfig.businessName}:`,
     '',
     ...items.map(
       (item) =>
@@ -23,6 +29,9 @@ export function buildWhatsAppOrderLink(items: CartItem[], total: number) {
     ),
     '',
     `Total: ₦${total.toLocaleString()}`,
+    ...(paymentReference
+      ? ['', `✅ Paid via Paystack — Ref: ${paymentReference}`]
+      : []),
   ];
 
   const message = encodeURIComponent(lines.join('\n'));

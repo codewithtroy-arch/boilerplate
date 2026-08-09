@@ -3,15 +3,66 @@
 import { useState } from 'react';
 import { useCart } from '@/lib/cart-context';
 import { buildWhatsAppOrderLink } from '@/lib/whatsapp-checkout';
+import { payWithPaystack } from '@/lib/paystack';
+
+type CheckoutStatus = 'idle' | 'paying' | 'verifying' | 'error';
 
 export function CartDrawer() {
   const { items, updateQuantity, removeItem, total, clear } = useCart();
   const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<CheckoutStatus>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
-  function handleCheckout() {
-    const link = buildWhatsAppOrderLink(items, total);
-    window.open(link, '_blank');
+  async function handlePayAndCheckout() {
+    setErrorMsg('');
+
+    if (!email || !email.includes('@')) {
+      setErrorMsg('Enter a valid email to pay.');
+      return;
+    }
+
+    setStatus('paying');
+
+    try {
+      payWithPaystack({
+        email,
+        amountNaira: total,
+        onClose: () => setStatus('idle'),
+        onSuccess: async (reference) => {
+          setStatus('verifying');
+          try {
+            const res = await fetch('/api/paystack/verify', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ reference }),
+            });
+            const data = await res.json();
+
+            if (!data.verified) {
+              setStatus('error');
+              setErrorMsg(
+                'Payment could not be verified. If you were charged, contact the shop directly.'
+              );
+              return;
+            }
+
+            const link = buildWhatsAppOrderLink(items, total, reference);
+            window.open(link, '_blank');
+            clear();
+            setStatus('idle');
+            setOpen(false);
+          } catch {
+            setStatus('error');
+            setErrorMsg('Could not verify payment — check your connection and try again.');
+          }
+        },
+      });
+    } catch (err) {
+      setStatus('error');
+      setErrorMsg(err instanceof Error ? err.message : 'Could not start payment.');
+    }
   }
 
   return (
@@ -83,12 +134,28 @@ export function CartDrawer() {
                   <span>Total</span>
                   <span>₦{total.toLocaleString()}</span>
                 </div>
+
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-md border border-ink/15 px-3 py-2 text-sm"
+                />
+
                 <button
-                  onClick={handleCheckout}
-                  className="w-full rounded-md bg-ink px-3 py-3 text-sm font-medium tracking-wide text-paper transition-colors hover:bg-blush"
+                  onClick={handlePayAndCheckout}
+                  disabled={status === 'paying' || status === 'verifying'}
+                  className="w-full rounded-md bg-ink px-3 py-3 text-sm font-medium tracking-wide text-paper transition-colors hover:bg-blush disabled:opacity-50"
                 >
-                  Checkout via WhatsApp
+                  {status === 'paying' && 'Waiting for payment...'}
+                  {status === 'verifying' && 'Confirming payment...'}
+                  {(status === 'idle' || status === 'error') &&
+                    `Pay ₦${total.toLocaleString()} & checkout`}
                 </button>
+
+                {errorMsg && <p className="text-xs text-blush">{errorMsg}</p>}
+
                 <button
                   onClick={clear}
                   className="w-full text-center text-xs text-muted-foreground underline"
