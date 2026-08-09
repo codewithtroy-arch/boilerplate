@@ -37,7 +37,7 @@ export function CartDrawer() {
             const res = await fetch('/api/paystack/verify', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ reference }),
+              body: JSON.stringify({ reference, email, items }),
             });
             const data = await res.json();
 
