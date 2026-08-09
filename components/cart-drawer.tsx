@@ -26,20 +26,11 @@ export function CartDrawer() {
 
     setStatus('paying');
 
-    // Open the tab NOW, synchronously with the click. Browsers block
-    // window.open() called later from an async callback (after payment
-    // verification finishes) — opening a blank tab immediately, then
-    // redirecting it once verification succeeds, works around that.
-    const preOpenedTab = window.open('', '_blank');
-
     try {
       payWithPaystack({
         email,
         amountNaira: total,
-        onClose: () => {
-          preOpenedTab?.close();
-          setStatus('idle');
-        },
+        onClose: () => setStatus('idle'),
         onSuccess: async (reference) => {
           setStatus('verifying');
           try {
@@ -51,7 +42,6 @@ export function CartDrawer() {
             const data = await res.json();
 
             if (!data.verified) {
-              preOpenedTab?.close();
               setStatus('error');
               setErrorMsg(
                 'Payment could not be verified. If you were charged, contact the shop directly.'
@@ -59,24 +49,19 @@ export function CartDrawer() {
               return;
             }
 
-            const link = buildWhatsAppOrderLink(items, total, reference);
-            setWhatsappLink(link);
-
-            if (preOpenedTab) {
-              preOpenedTab.location.href = link;
-            }
-
+            // Shown as a link the person taps themselves on the confirmation
+            // screen below — a real click on a real link is never blocked
+            // by the browser, unlike a window.open() from async code.
+            setWhatsappLink(buildWhatsAppOrderLink(items, total, reference));
             clear();
             setStatus('success');
           } catch {
-            preOpenedTab?.close();
             setStatus('error');
             setErrorMsg('Could not verify payment — check your connection and try again.');
           }
         },
       });
     } catch (err) {
-      preOpenedTab?.close();
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Could not start payment.');
     }
