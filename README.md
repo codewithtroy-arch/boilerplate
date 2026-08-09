@@ -95,6 +95,33 @@ as a paid add-on per client rather than the default, since it adds app
 store fees ($99/yr Apple, $25 one-time Google) and a release pipeline on
 top of the PWA.
 
+## Catalog & WhatsApp Checkout app
+
+The `/catalog` route is a working first version: product grid → cart →
+checkout via a pre-filled WhatsApp message to the merchant.
+
+**Setup:**
+1. In Supabase: **SQL Editor → New query**, paste the contents of
+   `supabase/catalog_schema.sql`, click **Run**. This creates the
+   `products` table with 3 sample products.
+2. Add `NEXT_PUBLIC_WHATSAPP_NUMBER` as an environment variable (locally in
+   `.env.local`, and in Vercel → Settings → Environment Variables) — the
+   merchant's WhatsApp number in international format with no `+` or
+   spaces, e.g. `2348031234567`.
+3. Redeploy if you added the env var in Vercel after your last deploy.
+4. Visit `/catalog` — you'll see the 3 sample products. Add to cart, open
+   the cart button bottom-right, click **Checkout via WhatsApp** — it opens
+   WhatsApp with the order pre-typed, ready for the merchant to confirm.
+5. Replace the sample products: Supabase → **Table Editor → products** —
+   edit rows directly, or delete the samples and add real ones (name,
+   price, description). Add `image_url` values once you have product
+   photos hosted somewhere (a Supabase Storage bucket works well).
+
+**Not built yet (next steps from the playbook):** the webhook that
+auto-parses orders and the Paystack payment step — this version sends the
+order to WhatsApp for manual confirmation, which is enough for a first
+working app most small merchants can use immediately.
+
 ## Building an app on top of this
 
 Each of the four playbook apps reuses this exact skeleton:
