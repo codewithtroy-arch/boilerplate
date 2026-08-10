@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { getCurrentProfile } from '@/lib/get-profile';
 import { updateProduct } from './actions';
 import { DeleteProductButton } from './delete-button';
 import { AddProductForm } from './add-product-form';
@@ -7,19 +8,12 @@ import { AddProductForm } from './add-product-form';
 const LOW_STOCK_THRESHOLD = 5;
 
 export default async function AdminProductsPage() {
+  const { user, role } = await getCurrentProfile();
+
+  if (!user) redirect('/login');
+  if (role !== 'admin') redirect('/dashboard');
+
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect('/login');
-  }
-
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (!adminEmail || user.email !== adminEmail) {
-    redirect('/dashboard');
-  }
 
   const { data } = await supabase
     .from('products')

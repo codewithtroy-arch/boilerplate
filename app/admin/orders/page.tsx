@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { getCurrentProfile } from '@/lib/get-profile';
 
 type Order = {
   id: string;
@@ -20,15 +21,12 @@ function isSameWeek(date: Date, now: Date) {
 }
 
 export default async function AdminOrdersPage() {
-  const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { user, role } = await getCurrentProfile();
 
   if (!user) redirect('/login');
+  if (role !== 'admin') redirect('/dashboard');
 
-  const adminEmail = process.env.ADMIN_EMAIL;
-  if (!adminEmail || user.email !== adminEmail) redirect('/dashboard');
+  const supabase = createClient();
 
   const { data } = await supabase
     .from('orders')

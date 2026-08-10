@@ -23,4 +23,4 @@ alter table orders enable row level security;
 
 create policy "Admin can view orders"
   on orders for select
-  using (auth.jwt() ->> 'email' = 'goodpromzy@gmail.com');
+  using (auth.jwt() ->> 'email' = 'you@example.com');

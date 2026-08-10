@@ -1,10 +1,12 @@
 'use server';
 
-import { siteConfig } from '@/lib/site-config';
+import { getSettings } from '@/lib/get-settings';
 
 export async function generateProductDescription(productName: string): Promise<string> {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey || !productName.trim()) return '';
+
+  const settings = await getSettings();
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -20,7 +22,7 @@ export async function generateProductDescription(productName: string): Promise<s
         messages: [
           {
             role: 'user',
-            content: `Write one short, appealing product description (under 15 words, no quotes, no markdown) for "${productName}", sold by ${siteConfig.businessName}, a skincare business. Reply with only the description text, nothing else.`,
+            content: `Write one short, appealing product description (under 15 words, no quotes, no markdown) for "${productName}", sold by ${settings.business_name}, a skincare business. Reply with only the description text, nothing else.`,
           },
         ],
       }),

@@ -7,7 +7,13 @@ import { payWithPaystack } from '@/lib/paystack';
 
 type CheckoutStatus = 'idle' | 'paying' | 'verifying' | 'success' | 'error';
 
-export function CartDrawer() {
+export function CartDrawer({
+  businessName,
+  whatsappNumber,
+}: {
+  businessName: string;
+  whatsappNumber: string | null;
+}) {
   const { items, updateQuantity, removeItem, total, clear } = useCart();
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState('');
@@ -52,7 +58,9 @@ export function CartDrawer() {
             // Shown as a link the person taps themselves on the confirmation
             // screen below — a real click on a real link is never blocked
             // by the browser, unlike a window.open() from async code.
-            setWhatsappLink(buildWhatsAppOrderLink(items, total, reference));
+            setWhatsappLink(
+              buildWhatsAppOrderLink(items, total, businessName, whatsappNumber, reference)
+            );
             clear();
             setStatus('success');
           } catch {

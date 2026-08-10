@@ -25,6 +25,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Link href="/admin/orders" className="text-sm font-medium text-ink">
           Orders
         </Link>
+        <Link href="/admin/settings" className="text-sm font-medium text-ink">
+          Settings
+        </Link>
       </nav>
       {children}
     </div>

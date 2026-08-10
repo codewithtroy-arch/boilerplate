@@ -1,20 +1,24 @@
 import { createClient } from '@/lib/supabase/server';
+import { getSettings } from '@/lib/get-settings';
 import { CartProvider } from '@/lib/cart-context';
 import { ProductGrid } from '@/components/product-grid';
 import { CartDrawer } from '@/components/cart-drawer';
-import { siteConfig } from '@/lib/site-config';
 import Script from 'next/script';
 
-// Revalidate every 60s so new/edited products show up without a full redeploy.
+// Revalidate every 60s so new/edited products and settings show up
+// without a full redeploy.
 export const revalidate = 60;
 
 export default async function CatalogPage() {
   const supabase = createClient();
-  const { data: products } = await supabase
-    .from('products')
-    .select('id, name, price, image_url')
-    .eq('in_stock', true)
-    .order('created_at', { ascending: false });
+  const [{ data: products }, settings] = await Promise.all([
+    supabase
+      .from('products')
+      .select('id, name, price, image_url')
+      .eq('in_stock', true)
+      .order('created_at', { ascending: false }),
+    getSettings(),
+  ]);
 
   return (
     <CartProvider>
@@ -28,10 +32,10 @@ export default async function CatalogPage() {
           </div>
 
           <h1 className="font-display text-4xl italic text-ink">
-            {siteConfig.businessName}
+            {settings.business_name}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
-            {siteConfig.tagline} — order straight to WhatsApp
+            {settings.tagline} — order straight to WhatsApp
           </p>
         </header>
 
@@ -39,7 +43,10 @@ export default async function CatalogPage() {
           <ProductGrid products={products ?? []} />
         </div>
 
-        <CartDrawer />
+        <CartDrawer
+          businessName={settings.business_name}
+          whatsappNumber={settings.whatsapp_number}
+        />
       </main>
     </CartProvider>
   );

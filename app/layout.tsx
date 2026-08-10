@@ -16,17 +16,10 @@ const body = Manrope({
 });
 
 export const metadata: Metadata = {
-  title: 'Coded App Boilerplate',
+  title: 'Shop',
   description: 'Next.js + Supabase boilerplate for custom-coded micro-SaaS apps',
-  manifest: '/manifest.json',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
-    title: 'Coded App',
-  },
   icons: {
     icon: '/icons/icon-192.png',
-    apple: '/icons/icon-192.png',
   },
 };
 
