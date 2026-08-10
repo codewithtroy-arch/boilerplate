@@ -85,7 +85,7 @@ export function CartDrawer({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="refined-card fixed bottom-6 right-6 z-40 rounded-full bg-ink px-6 py-3 text-sm font-medium tracking-wide text-paper"
+        className="fixed bottom-6 right-6 z-40 rounded-full bg-rose px-6 py-3 text-sm font-medium tracking-wide text-white shadow-lg"
       >
         Bag {count > 0 && `(${count})`}
       </button>
@@ -113,7 +113,7 @@ export function CartDrawer({
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full rounded-md bg-ink px-3 py-3 text-center text-sm font-medium tracking-wide text-paper transition-colors hover:bg-blush"
+                  className="w-full rounded-md bg-ink px-3 py-3 text-center text-sm font-medium tracking-wide text-paper transition-colors hover:bg-rose"
                 >
                   Continue to WhatsApp
                 </a>
@@ -158,7 +158,7 @@ export function CartDrawer({
                         </div>
                         <button
                           onClick={() => removeItem(item.id)}
-                          className="text-xs text-blush underline"
+                          className="text-xs text-rose underline"
                         >
                           Remove
                         </button>
@@ -185,7 +185,7 @@ export function CartDrawer({
                     <button
                       onClick={handlePayAndCheckout}
                       disabled={status === 'paying' || status === 'verifying'}
-                      className="w-full rounded-md bg-ink px-3 py-3 text-sm font-medium tracking-wide text-paper transition-colors hover:bg-blush disabled:opacity-50"
+                      className="w-full rounded-md bg-ink px-3 py-3 text-sm font-medium tracking-wide text-paper transition-colors hover:bg-rose disabled:opacity-50"
                     >
                       {status === 'paying' && 'Waiting for payment...'}
                       {status === 'verifying' && 'Confirming payment...'}
@@ -193,7 +193,7 @@ export function CartDrawer({
                         `Pay ₦${total.toLocaleString()} & checkout`}
                     </button>
 
-                    {errorMsg && <p className="text-xs text-blush">{errorMsg}</p>}
+                    {errorMsg && <p className="text-xs text-rose">{errorMsg}</p>}
 
                     <button
                       onClick={clear}

@@ -59,6 +59,18 @@ export default async function AdminSettingsPage() {
           )}
         </div>
 
+        <div>
+          <label className="text-xs text-muted-foreground">
+            About your shop (shown in the About section on your catalog page)
+          </label>
+          <textarea
+            name="about_text"
+            defaultValue={settings.about_text}
+            rows={4}
+            className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2 text-sm"
+          />
+        </div>
+
         <button
           type="submit"
           className="self-start rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper"

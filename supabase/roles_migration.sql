@@ -1,5 +1,8 @@
 -- Run this in Supabase: Project > SQL Editor > New query > paste > Run
 --
+-- REQUIRES: run supabase/setup_wizard_schema.sql FIRST — this file's
+-- trigger writes to the settings table it creates.
+--
 -- IMPORTANT: Near the bottom, replace 'you@example.com' with the email you
 -- already use to sign in — this backfills your existing account as admin,
 -- since the auto-admin trigger below only applies to brand-new signups.
@@ -20,7 +23,10 @@ create policy "Users can view own profile"
 
 -- Auto-creates a profile row whenever someone signs up. The FIRST person
 -- ever to sign up becomes admin automatically; everyone after that is a
--- regular customer account.
+-- regular customer account. For that first admin, it also saves the
+-- business name they entered during /setup — this runs the moment the
+-- account is created, so it works the same whether or not "Confirm email"
+-- is required (it doesn't wait for the browser to have a session).
 create or replace function public.handle_new_user()
 returns trigger
 language plpgsql
@@ -28,11 +34,21 @@ security definer set search_path = public
 as $$
 declare
   admin_already_exists boolean;
+  submitted_business_name text;
 begin
   select exists(select 1 from public.profiles where role = 'admin') into admin_already_exists;
 
   insert into public.profiles (id, email, role)
   values (new.id, new.email, case when admin_already_exists then 'customer' else 'admin' end);
+
+  if not admin_already_exists then
+    submitted_business_name := new.raw_user_meta_data ->> 'business_name';
+    if submitted_business_name is not null and submitted_business_name <> '' then
+      update public.settings
+      set business_name = submitted_business_name, updated_at = now()
+      where id = 1;
+    end if;
+  end if;
 
   return new;
 end;

@@ -20,13 +20,16 @@ const config: Config = {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        // Premium skincare palette — quiet ivory base, blush + sage accents,
-        // a fine gold line reserved for the authenticity seal.
-        ink: '#2B2622',
+        // Catalog storefront palette — soft blush hero, vivid rose accent.
+        // Admin keeps the calmer ivory/gold palette below; the storefront
+        // gets more expressive, since it's the customer-facing "brand".
+        ink: '#241F1F',
         paper: '#FBF6F1',
         blush: '#B97A82',
         sage: '#7C8A6E',
         gold: '#A98240',
+        blossom: '#FDF1F0',
+        rose: '#E85D75',
       },
       fontFamily: {
         display: ['var(--font-display)'],

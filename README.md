@@ -19,10 +19,11 @@ Blueprint*. Clone it per client, add the app-specific feature, deploy.
 2. Once it's up, go to **Project Settings → API** and copy:
    - Project URL
    - `anon` public key
-3. Go to **Authentication → Providers → Email** and make sure "Email OTP" /
-   magic link is enabled (it is by default). Under **Authentication → URL
-   Configuration**, add `http://localhost:3000/auth/callback` and your future
-   production URL as redirect URLs.
+3. Sign-in uses email + password (set during `/setup`), not magic links —
+   no extra auth configuration needed here. If you want faster local
+   testing, you can turn off "Confirm email" under **Authentication →
+   Providers → Email**, otherwise you'll need to click a confirmation
+   link the first time you sign up.
 
 ## 2. Configure environment variables
 
@@ -40,8 +41,8 @@ npm install
 npm run dev
 ```
 
-Visit `http://localhost:3000`, click **Sign in**, enter an email, and check
-your inbox for the magic link. It'll redirect to `/dashboard`.
+Visit `http://localhost:3000`, click **Sign in** — first time, go to
+`/setup` instead to create your account.
 
 ## 4. Deploy
 
@@ -57,16 +58,18 @@ instead of manually editing SQL or hunting through code:
 
 1. Run `supabase/setup_wizard_schema.sql` in Supabase's SQL Editor (no
    placeholders to edit — it works as-is).
-2. Run `supabase/roles_migration.sql` too (this is what makes "first
+2. Also run `supabase/about_section_schema.sql` (adds the About text field
+   — also no placeholders).
+3. Run `supabase/roles_migration.sql` too (this is what makes "first
    person to sign up = admin" work — see the Admin backend section below
    for the one placeholder it needs).
-3. Visit `/setup` on your live site. Enter your business name, your
+4. Visit `/setup` on your live site. Enter your business name, your
    email, and a password. That's it — you're signed in as admin and
    redirected straight to `/admin/products`.
-4. Once in, go to **Settings** in the admin nav and add your WhatsApp
-   number — checkout won't work until that's set. Add your Paystack keys
-   in Vercel whenever you're ready to accept payments (see the Paystack
-   section below).
+5. Once in, go to **Settings** in the admin nav and add your WhatsApp
+   number and an About paragraph — checkout won't work until the WhatsApp
+   number is set. Add your Paystack keys in Vercel whenever you're ready
+   to accept payments (see the Paystack section below).
 
 `/setup` only works once — visiting it again after an admin account
 exists just shows a "sign in instead" screen, so it can't be used to

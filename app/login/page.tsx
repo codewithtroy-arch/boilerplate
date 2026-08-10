@@ -1,66 +1,72 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState<'idle' | 'signing-in' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setStatus('sending');
+    setStatus('signing-in');
     setErrorMsg('');
 
     const supabase = createClient();
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
-      },
-    });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
     if (error) {
       setStatus('error');
       setErrorMsg(error.message);
-    } else {
-      setStatus('sent');
+      return;
     }
+
+    router.push('/dashboard');
+    router.refresh();
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-8">
-      <div className="w-full max-w-sm space-y-4">
-        <h1 className="text-2xl font-semibold">Sign in</h1>
+    <main className="flex min-h-screen flex-col items-center justify-center bg-paper p-8">
+      <div className="w-full max-w-sm">
+        <h1 className="mb-6 font-display text-3xl italic text-ink">Sign in</h1>
 
-        {status === 'sent' ? (
-          <p className="text-sm text-muted-foreground">
-            Check your email for a magic link. Click it to sign in — no password
-            needed.
-          </p>
-        ) : (
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <input
-              type="email"
-              required
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-border px-3 py-2 text-sm"
-            />
-            <button
-              type="submit"
-              disabled={status === 'sending'}
-              className="w-full rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground disabled:opacity-50"
-            >
-              {status === 'sending' ? 'Sending link...' : 'Send magic link'}
-            </button>
-            {status === 'error' && (
-              <p className="text-sm text-red-600">{errorMsg}</p>
-            )}
-          </form>
-        )}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <input
+            type="email"
+            required
+            placeholder="you@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-md border border-ink/15 px-3 py-2.5 text-sm"
+          />
+          <input
+            type="password"
+            required
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full rounded-md border border-ink/15 px-3 py-2.5 text-sm"
+          />
+          <button
+            type="submit"
+            disabled={status === 'signing-in'}
+            className="mt-1 w-full rounded-md bg-ink px-3 py-3 text-sm font-medium tracking-wide text-paper transition-colors hover:bg-blush disabled:opacity-50"
+          >
+            {status === 'signing-in' ? 'Signing in...' : 'Sign in'}
+          </button>
+          {status === 'error' && <p className="text-sm text-blush">{errorMsg}</p>}
+        </form>
+
+        <p className="mt-4 text-center text-xs text-muted-foreground">
+          No account yet?{' '}
+          <a href="/setup" className="text-ink underline">
+            Set up your shop
+          </a>
+        </p>
       </div>
     </main>
   );

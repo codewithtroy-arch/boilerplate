@@ -16,7 +16,19 @@ export async function completeSetup(formData: FormData) {
 
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.signUp({ email, password });
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      // Stored on the auth user itself. The database trigger (see
+      // roles_migration.sql) reads this and saves it as the shop's
+      // business name — this way it works identically whether or not
+      // "Confirm email" is required, since the trigger runs the moment
+      // the account is created either way, not when this request returns.
+      data: { business_name: businessName },
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+    },
+  });
 
   if (error) {
     return { error: error.message };
@@ -24,25 +36,15 @@ export async function completeSetup(formData: FormData) {
 
   // Depending on your Supabase project's "Confirm email" setting, signUp
   // either returns an active session immediately, or requires the person
-  // to click a confirmation email first. Handle both.
+  // to click a confirmation email first. Either way, the business name is
+  // already saved by the trigger — this branch is just about whether
+  // *this browser* has a session yet.
   if (!data.session) {
     return {
       needsEmailConfirm: true,
       message:
-        'Account created — check your email to confirm it, then sign in.',
+        "Almost done — check your email and click the confirmation link. It'll bring you straight into your admin dashboard.",
     };
-  }
-
-  // Session is active — save the business name right away. The trigger
-  // in roles_migration.sql already made this account admin, since it's
-  // the first one.
-  const { error: settingsError } = await supabase
-    .from('settings')
-    .update({ business_name: businessName })
-    .eq('id', 1);
-
-  if (settingsError) {
-    return { error: `Signed up, but couldn't save business name: ${settingsError.message}` };
   }
 
   return { success: true };
