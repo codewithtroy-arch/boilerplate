@@ -1,12 +1,15 @@
+import type { User } from '@supabase/supabase-js';
 import { createClient } from './supabase/server';
 
-export async function getCurrentProfile() {
+type Role = 'admin' | 'customer' | null;
+
+export async function getCurrentProfile(): Promise<{ user: User | null; role: Role }> {
   const supabase = createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) return { user: null, role: null as const };
+  if (!user) return { user: null, role: null };
 
   const { data: profile } = await supabase
     .from('profiles')
@@ -14,5 +17,5 @@ export async function getCurrentProfile() {
     .eq('id', user.id)
     .single();
 
-  return { user, role: (profile?.role ?? 'customer') as 'admin' | 'customer' };
+  return { user, role: (profile?.role as Role) ?? 'customer' };
 }

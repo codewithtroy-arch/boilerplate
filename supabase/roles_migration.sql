@@ -49,7 +49,7 @@ create trigger on_auth_user_created
 insert into public.profiles (id, email, role)
 select id, email, 'admin'
 from auth.users
-where email = 'goodpromzy@gmail.com'
+where email = 'you@example.com'
 on conflict (id) do update set role = 'admin';
 
 -- Replace the old hardcoded-email policies with role-based ones.
