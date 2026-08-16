@@ -1,8 +1,12 @@
+import Image from 'next/image';
 import { createClient } from '@/lib/supabase/server';
 import { getSettings } from '@/lib/get-settings';
 import { CartProvider } from '@/lib/cart-context';
 import { ProductGrid } from '@/components/product-grid';
 import { CartDrawer } from '@/components/cart-drawer';
+import { ThemeToggle } from '@/components/theme-toggle';
+import { MobileMenu } from '@/components/mobile-menu';
+import { Toast } from '@/components/toast';
 import Script from 'next/script';
 
 // Revalidate every 60s so new/edited products and settings show up
@@ -18,86 +22,118 @@ const NAV_LINKS = [
 
 export default async function CatalogPage() {
   const supabase = createClient();
-  const [{ data: products }, settings] = await Promise.all([
+  const [{ data: products }, { data: reviews }, settings] = await Promise.all([
     supabase
       .from('products')
       .select('id, name, price, image_url')
       .eq('in_stock', true)
       .order('created_at', { ascending: false }),
+    supabase.from('reviews').select('product_id, rating'),
     getSettings(),
   ]);
+
+  // Real averages only — never fabricated. Products with zero reviews
+  // simply show no rating at all.
+  const ratingsByProduct = new Map<string, { total: number; count: number }>();
+  for (const r of reviews ?? []) {
+    const entry = ratingsByProduct.get(r.product_id) ?? { total: 0, count: 0 };
+    entry.total += r.rating;
+    entry.count += 1;
+    ratingsByProduct.set(r.product_id, entry);
+  }
+
+  const productsWithRatings = (products ?? []).map((p) => {
+    const entry = ratingsByProduct.get(p.id);
+    return {
+      ...p,
+      avgRating: entry ? entry.total / entry.count : null,
+      reviewCount: entry?.count ?? 0,
+    };
+  });
 
   return (
     <CartProvider>
       <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" />
-      <main className="scroll-smooth bg-paper pb-28">
+      <div className="marble-bg min-h-screen pb-28">
         {/* Nav */}
-        <nav className="sticky top-0 z-30 flex items-center justify-between bg-paper/95 px-5 py-4 backdrop-blur">
-          <span className="font-display text-lg font-bold text-ink">
+        <nav className="sticky top-0 z-30 flex h-[64px] items-center justify-between border-b border-black/5 bg-white/90 px-6 backdrop-blur-md dark:border-white/5 dark:bg-[#1c1b1a]/90">
+          <span className="font-display text-2xl tracking-wide text-ink dark:text-[#f2f0ed]">
             {settings.business_name}
           </span>
-          <div className="flex gap-4 text-xs font-semibold text-ink/60">
+
+          <div className="hidden gap-8 text-sm text-ink/80 dark:text-[#f2f0ed]/80 md:flex">
             {NAV_LINKS.map((link) => (
-              <a key={link.href} href={link.href} className="hover:text-cobalt">
+              <a key={link.href} href={link.href} className="hover:text-pink-dark">
                 {link.label}
               </a>
             ))}
           </div>
+
+          <div className="flex items-center gap-1">
+            <ThemeToggle />
+            <MobileMenu />
+          </div>
         </nav>
 
         {/* Hero */}
-        <section id="home" className="gradient-hero scroll-mt-16 px-6 pb-14 pt-8 text-white">
-          <span className="inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-semibold">
-            ✨ New arrivals
-          </span>
-          <h1 className="mt-4 max-w-xs font-display text-4xl font-bold leading-tight">
-            {settings.business_name}
-          </h1>
-          <p className="mt-3 max-w-xs text-sm text-white/85">{settings.tagline}</p>
+        <section
+          id="home"
+          className="grid scroll-mt-16 grid-cols-1 items-center gap-8 px-6 py-14 md:grid-cols-2 md:px-12"
+        >
+          <div>
+            <p className="font-display text-lg italic text-pink-dark">
+              {settings.tagline}
+            </p>
+            <h1 className="mt-2 font-display text-5xl font-medium leading-[1.05] text-ink dark:text-[#f2f0ed]">
+              {settings.business_name}
+            </h1>
+            <p className="mt-4 max-w-sm text-sm text-text-light dark:text-[#a8a49e]">
+              Order straight to WhatsApp — {settings.about_text.slice(0, 90)}
+              {settings.about_text.length > 90 ? '…' : ''}
+            </p>
+            <a
+              href="#products"
+              className="mt-6 inline-flex items-center gap-2 rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-marble transition-transform hover:scale-[1.03] dark:bg-pink-dark dark:text-[#1a1510]"
+            >
+              Shop now →
+            </a>
+          </div>
 
-          <a
-            href="#products"
-            className="mt-6 inline-block rounded-full bg-white px-7 py-3 text-sm font-bold text-cobalt shadow-lg"
-          >
-            Shop now →
-          </a>
-
-          <div className="mt-8 flex flex-wrap gap-2">
-            <span className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-medium">
-              ✓ 100% Original
-            </span>
-            <span className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-medium">
-              ✓ Verified Seller
-            </span>
-            <span className="rounded-full bg-white/20 px-3 py-1.5 text-xs font-medium">
-              ✓ WhatsApp Checkout
-            </span>
+          <div className="overflow-hidden rounded-2xl shadow-2xl">
+            <Image
+              src="/images/hero-serum.jpg"
+              alt={settings.business_name}
+              width={800}
+              height={800}
+              className="h-full w-full object-cover"
+              priority
+            />
           </div>
         </section>
 
         {/* Products */}
-        <div id="products" className="mx-auto max-w-2xl scroll-mt-16 px-5 pt-8">
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="font-display text-2xl font-bold text-ink">Shop the range</h2>
-            <span className="text-xs font-medium text-ink/40">
-              {(products ?? []).length} items
+        <section id="products" className="scroll-mt-16 px-6 py-10 md:px-12">
+          <div className="mb-6 flex items-baseline justify-between">
+            <h2 className="font-display text-3xl text-ink dark:text-[#f2f0ed]">Shop</h2>
+            <span className="text-xs text-text-light dark:text-[#a8a49e]">
+              {(products ?? []).length} products
             </span>
           </div>
-          <ProductGrid products={products ?? []} />
-        </div>
+          <ProductGrid products={productsWithRatings} />
+        </section>
 
         {/* About */}
-        <section id="about" className="mx-auto mt-16 max-w-2xl scroll-mt-16 px-5">
-          <h2 className="mb-3 font-display text-2xl font-bold text-ink">About us</h2>
-          <p className="max-w-xl text-sm leading-relaxed text-ink/70">
+        <section id="about" className="scroll-mt-16 px-6 py-10 md:px-12">
+          <h2 className="mb-3 font-display text-3xl text-ink dark:text-[#f2f0ed]">About</h2>
+          <p className="max-w-xl text-sm leading-relaxed text-text-light dark:text-[#a8a49e]">
             {settings.about_text}
           </p>
         </section>
 
         {/* Contact */}
-        <section id="contact" className="mx-auto mt-16 max-w-2xl scroll-mt-16 px-5">
-          <h2 className="mb-3 font-display text-2xl font-bold text-ink">Contact</h2>
-          <p className="max-w-xl text-sm leading-relaxed text-ink/70">
+        <section id="contact" className="scroll-mt-16 px-6 py-10 md:px-12">
+          <h2 className="mb-3 font-display text-3xl text-ink dark:text-[#f2f0ed]">Contact</h2>
+          <p className="max-w-xl text-sm leading-relaxed text-text-light dark:text-[#a8a49e]">
             Questions before you order? Message us directly on WhatsApp.
           </p>
           {settings.whatsapp_number && (
@@ -105,18 +141,52 @@ export default async function CatalogPage() {
               href={`https://wa.me/${settings.whatsapp_number}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-4 inline-block rounded-full bg-cobalt px-7 py-3 text-sm font-bold text-white shadow-lg"
+              className="mt-4 inline-block rounded-full bg-sage px-7 py-3.5 text-sm font-medium text-ink transition-transform hover:scale-[1.03]"
             >
               Chat on WhatsApp
             </a>
           )}
         </section>
 
+        {/* Footer */}
+        <footer className="mt-10 border-t border-black/5 px-6 py-10 dark:border-white/5 md:px-12">
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div className="col-span-2">
+              <span className="font-display text-xl text-ink dark:text-[#f2f0ed]">
+                {settings.business_name}
+              </span>
+              <p className="mt-2 max-w-xs text-xs text-text-light dark:text-[#a8a49e]">
+                {settings.tagline}
+              </p>
+            </div>
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-ink dark:text-[#f2f0ed]">
+                Shop
+              </h4>
+              <a href="#products" className="mt-2 block text-xs text-text-light dark:text-[#a8a49e]">
+                All products
+              </a>
+            </div>
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wide text-ink dark:text-[#f2f0ed]">
+                Help
+              </h4>
+              <a href="#contact" className="mt-2 block text-xs text-text-light dark:text-[#a8a49e]">
+                Contact us
+              </a>
+            </div>
+          </div>
+          <p className="mt-8 text-xs text-text-light dark:text-[#a8a49e]">
+            © {new Date().getFullYear()} {settings.business_name}. All rights reserved.
+          </p>
+        </footer>
+
         <CartDrawer
           businessName={settings.business_name}
           whatsappNumber={settings.whatsapp_number}
         />
-      </main>
+        <Toast />
+      </div>
     </CartProvider>
   );
 }

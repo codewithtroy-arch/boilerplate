@@ -18,6 +18,7 @@ type CartContextValue = {
   updateQuantity: (id: string, quantity: number) => void;
   clear: () => void;
   total: number;
+  toastMessage: string | null;
 };
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -26,6 +27,7 @@ const STORAGE_KEY = 'cart-items';
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [hydrated, setHydrated] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Load any saved cart once, on first mount in the browser.
   useEffect(() => {
@@ -45,6 +47,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   }, [items, hydrated]);
 
+  // Auto-dismiss the toast after a moment.
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => setToastMessage(null), 2200);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
+
   function addItem(product: Product) {
     setItems((prev) => {
       const existing = prev.find((i) => i.id === product.id);
@@ -55,6 +64,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { ...product, quantity: 1 }];
     });
+    setToastMessage(`Added ${product.name} to bag`);
   }
 
   function removeItem(id: string) {
@@ -77,7 +87,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, clear, total }}
+      value={{ items, addItem, removeItem, updateQuantity, clear, total, toastMessage }}
     >
       {children}
     </CartContext.Provider>

@@ -1,17 +1,18 @@
 import type { Metadata, Viewport } from 'next';
-import { Baloo_2, Inter } from 'next/font/google';
+import { Cormorant_Garamond, Inter } from 'next/font/google';
 import './globals.css';
 import { ServiceWorkerRegister } from '@/components/service-worker-register';
 
-const display = Baloo_2({
+const display = Cormorant_Garamond({
   subsets: ['latin'],
-  weight: ['600', '700'],
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   variable: '--font-display',
 });
 
 const body = Inter({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
+  weight: ['300', '400', '500', '600'],
   variable: '--font-body',
 });
 
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#FF4785',
+  themeColor: '#F8B4C4',
   width: 'device-width',
   initialScale: 1,
 };
@@ -36,7 +37,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body className="min-h-screen font-body antialiased">
+      <body className="min-h-screen bg-marble font-body text-ink antialiased dark:bg-[#121110] dark:text-[#f2f0ed]">
         {children}
         <ServiceWorkerRegister />
       </body>

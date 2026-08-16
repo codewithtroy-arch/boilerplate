@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { useCart } from '@/lib/cart-context';
+import { useCart, type CartItem } from '@/lib/cart-context';
 import { buildWhatsAppOrderLink } from '@/lib/whatsapp-checkout';
 import { payWithPaystack } from '@/lib/paystack';
+import { ReviewPrompt } from './review-prompt';
 
 type CheckoutStatus = 'idle' | 'paying' | 'verifying' | 'success' | 'error';
 
@@ -20,6 +21,7 @@ export function CartDrawer({
   const [status, setStatus] = useState<CheckoutStatus>('idle');
   const [errorMsg, setErrorMsg] = useState('');
   const [whatsappLink, setWhatsappLink] = useState('');
+  const [purchasedItems, setPurchasedItems] = useState<CartItem[]>([]);
   const count = items.reduce((sum, i) => sum + i.quantity, 0);
 
   async function handlePayAndCheckout() {
@@ -58,6 +60,7 @@ export function CartDrawer({
             setWhatsappLink(
               buildWhatsAppOrderLink(items, total, businessName, whatsappNumber, reference)
             );
+            setPurchasedItems(items);
             clear();
             setStatus('success');
           } catch {
@@ -75,6 +78,7 @@ export function CartDrawer({
   function handleReset() {
     setStatus('idle');
     setWhatsappLink('');
+    setPurchasedItems([]);
     setOpen(false);
   }
 
@@ -82,124 +86,156 @@ export function CartDrawer({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-cobalt px-6 py-3.5 text-sm font-bold text-white shadow-xl"
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-pink px-6 py-3.5 text-sm font-medium text-ink shadow-xl transition-transform hover:scale-105"
       >
-        🛍️ Bag {count > 0 && <span className="rounded-full bg-white/25 px-2 py-0.5">{count}</span>}
+        Bag {count > 0 && <span className="rounded-full bg-white/60 px-2 py-0.5">{count}</span>}
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-ink/40">
-          <div className="flex h-full w-full max-w-sm flex-col gap-5 rounded-l-[1.5rem] bg-white p-6">
-            <div className="flex items-center justify-between border-b border-ink/10 pb-4">
-              <h2 className="font-display text-xl font-bold text-ink">Your bag</h2>
+        <div className="fixed inset-0 z-50 flex justify-end bg-black/40">
+          <div className="flex h-full w-full max-w-sm flex-col bg-white dark:bg-[#1c1b1a]">
+            <div className="flex items-center justify-between border-b border-black/5 px-6 py-5 dark:border-white/5">
+              <h3 className="font-display text-2xl text-ink dark:text-[#f2f0ed]">Your Bag</h3>
               <button
                 onClick={() => setOpen(false)}
-                className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-ink/60"
+                aria-label="Close cart"
+                className="text-xl text-ink/60 dark:text-[#a8a49e]"
               >
-                Close
+                ✕
               </button>
             </div>
 
-            {status === 'success' ? (
-              <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-                <p className="font-display text-xl font-bold text-ink">🎉 Payment confirmed</p>
-                <p className="text-sm text-muted-foreground">
-                  Tap below to send your order to the shop on WhatsApp.
-                </p>
-                <a
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full rounded-full bg-cobalt px-3 py-3.5 text-center text-sm font-bold text-white shadow-lg"
-                >
-                  Continue to WhatsApp
-                </a>
-                <button onClick={handleReset} className="text-xs text-ink/50 underline">
-                  Done
-                </button>
-              </div>
-            ) : (
-              <>
-                {items.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">Your bag is empty.</p>
-                ) : (
-                  <div className="flex flex-1 flex-col gap-4 overflow-y-auto">
-                    {items.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between gap-2 rounded-2xl bg-muted p-3"
-                      >
-                        <div className="flex-1">
-                          <p className="text-sm font-semibold text-ink">{item.name}</p>
-                          <p className="text-xs text-muted-foreground">
-                            ₦{item.price.toLocaleString()} each
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm shadow-sm"
-                          >
-                            −
-                          </button>
-                          <span className="w-4 text-center text-sm font-medium">
-                            {item.quantity}
-                          </span>
-                          <button
-                            onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm shadow-sm"
-                          >
-                            +
-                          </button>
-                        </div>
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              {status === 'success' ? (
+                <div className="flex h-full flex-col items-center justify-center gap-4 text-center">
+                  <p className="font-display text-2xl text-ink dark:text-[#f2f0ed]">
+                    Payment confirmed 🎉
+                  </p>
+                  <p className="text-sm text-text-light dark:text-[#a8a49e]">
+                    Tap below to send your order to the shop on WhatsApp.
+                  </p>
+
+                  {purchasedItems.length > 0 && (
+                    <div className="flex w-full flex-col gap-2">
+                      {purchasedItems.map((item) => (
+                        <ReviewPrompt
+                          key={item.id}
+                          productId={item.id}
+                          productName={item.name}
+                        />
+                      ))}
+                    </div>
+                  )}
+
+                  <a
+                    href={whatsappLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full rounded-full bg-sage px-3 py-3.5 text-center text-sm font-medium text-ink shadow-lg"
+                  >
+                    Continue to WhatsApp
+                  </a>
+                  <button
+                    onClick={handleReset}
+                    className="text-xs text-text-light underline dark:text-[#a8a49e]"
+                  >
+                    Done
+                  </button>
+                </div>
+              ) : items.length === 0 ? (
+                <div className="flex h-full flex-col items-center justify-center gap-2 text-center">
+                  <p className="text-base font-medium text-ink dark:text-[#f2f0ed]">
+                    Your bag is empty
+                  </p>
+                  <p className="text-xs text-text-light dark:text-[#a8a49e]">
+                    Discover products you&apos;ll love
+                  </p>
+                  <button
+                    onClick={() => setOpen(false)}
+                    className="mt-4 rounded-full bg-pink px-6 py-3 text-sm font-medium text-ink"
+                  >
+                    Continue Shopping
+                  </button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {items.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex items-center justify-between gap-2 border-b border-black/5 pb-4 dark:border-white/5"
+                    >
+                      <div className="flex-1">
+                        <p className="text-sm font-medium text-ink dark:text-[#f2f0ed]">
+                          {item.name}
+                        </p>
+                        <p className="text-xs text-text-light dark:text-[#a8a49e]">
+                          ₦{item.price.toLocaleString()} each
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
                         <button
-                          onClick={() => removeItem(item.id)}
-                          className="text-xs font-medium text-blush"
+                          onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                          className="flex h-7 w-7 items-center justify-center rounded-full bg-pink-soft text-sm dark:bg-white/10"
                         >
-                          Remove
+                          −
+                        </button>
+                        <span className="w-4 text-center text-sm">{item.quantity}</span>
+                        <button
+                          onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                          className="flex h-7 w-7 items-center justify-center rounded-full bg-pink-soft text-sm dark:bg-white/10"
+                        >
+                          +
                         </button>
                       </div>
-                    ))}
-                  </div>
-                )}
-
-                {items.length > 0 && (
-                  <div className="space-y-3 border-t border-ink/10 pt-4">
-                    <div className="flex justify-between text-base font-bold text-ink">
-                      <span>Total</span>
-                      <span>₦{total.toLocaleString()}</span>
+                      <button
+                        onClick={() => removeItem(item.id)}
+                        className="text-xs text-blush underline"
+                      >
+                        Remove
+                      </button>
                     </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
-                    <input
-                      type="email"
-                      placeholder="you@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-full border border-ink/15 px-4 py-2.5 text-sm"
-                    />
+            {items.length > 0 && status !== 'success' && (
+              <div className="space-y-3 border-t border-black/5 px-6 py-5 dark:border-white/5">
+                <div className="flex justify-between text-sm">
+                  <span className="text-text-light dark:text-[#a8a49e]">Subtotal</span>
+                  <strong className="text-ink dark:text-[#f2f0ed]">
+                    ₦{total.toLocaleString()}
+                  </strong>
+                </div>
 
-                    <button
-                      onClick={handlePayAndCheckout}
-                      disabled={status === 'paying' || status === 'verifying'}
-                      className="w-full rounded-full bg-cobalt px-3 py-3.5 text-sm font-bold text-white shadow-lg disabled:opacity-50"
-                    >
-                      {status === 'paying' && 'Waiting for payment...'}
-                      {status === 'verifying' && 'Confirming payment...'}
-                      {(status === 'idle' || status === 'error') &&
-                        `Pay ₦${total.toLocaleString()} & checkout`}
-                    </button>
+                <input
+                  type="email"
+                  placeholder="you@example.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full rounded-full border border-black/10 px-4 py-2.5 text-sm dark:border-white/10 dark:bg-transparent dark:text-[#f2f0ed]"
+                />
 
-                    {errorMsg && <p className="text-xs text-blush">{errorMsg}</p>}
+                <button
+                  onClick={handlePayAndCheckout}
+                  disabled={status === 'paying' || status === 'verifying'}
+                  className="w-full rounded-full bg-ink px-3 py-3.5 text-sm font-medium text-marble shadow-lg disabled:opacity-50 dark:bg-pink-dark dark:text-[#1a1510]"
+                >
+                  {status === 'paying' && 'Waiting for payment...'}
+                  {status === 'verifying' && 'Confirming payment...'}
+                  {(status === 'idle' || status === 'error') &&
+                    `Pay ₦${total.toLocaleString()} & checkout`}
+                </button>
 
-                    <button
-                      onClick={clear}
-                      className="w-full text-center text-xs text-muted-foreground underline"
-                    >
-                      Clear bag
-                    </button>
-                  </div>
-                )}
-              </>
+                {errorMsg && <p className="text-xs text-blush">{errorMsg}</p>}
+
+                <button
+                  onClick={clear}
+                  className="w-full text-center text-xs text-text-light underline dark:text-[#a8a49e]"
+                >
+                  Clear bag
+                </button>
+              </div>
             )}
           </div>
         </div>

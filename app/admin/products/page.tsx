@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { getCurrentProfile } from '@/lib/get-profile';
@@ -17,13 +18,14 @@ export default async function AdminProductsPage() {
 
   const { data } = await supabase
     .from('products')
-    .select('id, name, price, in_stock, stock_quantity')
+    .select('id, name, price, in_stock, stock_quantity, image_url')
     .order('created_at', { ascending: false });
 
   const products = data ?? [];
   const lowStockCount = products.filter(
     (p) => p.stock_quantity <= LOW_STOCK_THRESHOLD
   ).length;
+  const missingPhotoCount = products.filter((p) => !p.image_url).length;
 
   return (
     <main className="mx-auto max-w-2xl p-6 pb-24">
@@ -39,6 +41,13 @@ export default async function AdminProductsPage() {
         </div>
       )}
 
+      {missingPhotoCount > 0 && (
+        <div className="mt-2 rounded-md border border-cobalt/30 bg-cobalt/5 px-4 py-2 text-sm text-cobalt">
+          {missingPhotoCount} product{missingPhotoCount > 1 ? 's' : ''} still using a
+          placeholder — add a real photo below for a more finished catalog.
+        </div>
+      )}
+
       <AddProductForm />
 
       <div className="mt-8 flex flex-col gap-3">
@@ -48,11 +57,33 @@ export default async function AdminProductsPage() {
             <form
               key={product.id}
               action={updateProduct}
-              className={`label-card flex flex-col gap-2 rounded-lg bg-paper p-4 sm:flex-row sm:items-center sm:gap-3 ${
+              className={`label-card flex flex-col gap-3 rounded-lg bg-paper p-4 sm:flex-row sm:items-center sm:gap-3 ${
                 isLow ? 'border-blush/50' : ''
               }`}
             >
               <input type="hidden" name="id" value={product.id} />
+
+              <div className="flex items-center gap-3 sm:flex-col sm:items-start">
+                {product.image_url ? (
+                  <Image
+                    src={product.image_url}
+                    alt={product.name}
+                    width={48}
+                    height={48}
+                    className="h-12 w-12 rounded-md object-cover"
+                  />
+                ) : (
+                  <div className="flex h-12 w-12 items-center justify-center rounded-md bg-muted text-[10px] text-muted-foreground">
+                    No photo
+                  </div>
+                )}
+                <input
+                  name="image"
+                  type="file"
+                  accept="image/*"
+                  className="w-24 text-[10px] sm:w-28"
+                />
+              </div>
 
               <input
                 name="name"

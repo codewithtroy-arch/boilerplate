@@ -20,24 +20,28 @@ const config: Config = {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        // Vibrant mobile-app palette — confident, saturated, playful.
-        ink: '#1A1A2E',
+        // Lumina palette — ported from the uploaded design.
+        ink: '#2C2C2C',
         paper: '#FFFFFF',
-        cobalt: '#FF4785', // magenta — primary accent (kept key name so
-                            // every existing bg-cobalt/text-cobalt class
-                            // across the app updates automatically)
-        violet: '#6C5CE7', // secondary accent
-        sun: '#FFB800',    // tertiary accent
-        blush: '#E63950',  // functional alert/warning red
+        marble: '#F9F7F5',
+        pink: '#F8B4C4',
+        'pink-dark': '#E89AAA',
+        'pink-soft': '#FDF2F5',
+        sage: '#A8C5B0',
+        'sage-dark': '#8FAD98',
+        'sage-soft': '#F0F5F1',
+        cream: '#D4C4B0',
+        'text-light': '#6B6B6B',
+        blush: '#D64545', // functional alert/warning red
       },
       fontFamily: {
         display: ['var(--font-display)'],
         body: ['var(--font-body)'],
       },
       borderRadius: {
-        lg: '1.25rem',
-        md: '0.75rem',
-        sm: '0.5rem',
+        lg: '1rem',
+        md: '0.5rem',
+        sm: '0.25rem',
       },
     },
   },

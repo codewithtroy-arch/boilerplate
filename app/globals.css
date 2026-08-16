@@ -4,30 +4,63 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 24% 15%;
-    --primary: 337 100% 65%;
-    --primary-foreground: 0 0% 100%;
-    --muted: 240 20% 96%;
-    --muted-foreground: 240 10% 45%;
-    --border: 240 15% 90%;
-  }
-
-  body {
-    @apply bg-background text-foreground;
+    --background: 30 20% 97%;
+    --foreground: 0 0% 17%;
+    --primary: 344 71% 82%;
+    --primary-foreground: 0 0% 17%;
+    --muted: 30 15% 94%;
+    --muted-foreground: 0 0% 42%;
+    --border: 0 0% 88%;
   }
 }
 
 @layer utilities {
-  /* App-style card: rounded, soft shadow — the default surface across
-     the whole app now (catalog cards, admin panels, forms). */
-  .label-card {
-    border-radius: 1.25rem;
-    box-shadow: 0 2px 8px theme('colors.ink' / 6%), 0 8px 24px theme('colors.ink' / 8%);
+  /* Marble page background with a soft readable overlay, ported from
+     the uploaded design. Light/dark swap via the .dark class. */
+  .marble-bg {
+    background-image: url('/images/marble-light.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    position: relative;
+  }
+  .dark .marble-bg {
+    background-image: url('/images/marble-dark.jpg');
+  }
+  .marble-bg::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(249, 247, 245, 0.72);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .dark .marble-bg::before {
+    background: rgba(18, 17, 16, 0.78);
+  }
+  .marble-bg > * {
+    position: relative;
+    z-index: 1;
   }
 
-  /* Vivid two-tone gradient, used for the hero and other bold accents. */
-  .gradient-hero {
-    background: linear-gradient(135deg, theme('colors.cobalt'), theme('colors.violet'));
+  .label-card {
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.04);
   }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+.toast-enter {
+  animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }

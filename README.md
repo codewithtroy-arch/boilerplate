@@ -50,6 +50,74 @@ Push to GitHub, import the repo on Vercel (free Hobby tier), add the same
 two env vars there, set `NEXT_PUBLIC_SITE_URL` to your Vercel URL, and add
 that URL's `/auth/callback` to Supabase's redirect list.
 
+## Real product ratings (no fake numbers)
+
+The uploaded design had star ratings, but they were fabricated demo
+numbers. Instead of copying fake data, there's now a real review system:
+
+- Right after a successful purchase, the cart drawer shows a quick
+  star-rating prompt for each item just bought — tap a star, optionally
+  hit submit.
+- Product cards on the storefront show a real average + review count —
+  but **only once a product actually has at least one review**. No
+  reviews yet means no rating shown at all, not a fake placeholder.
+
+**Setup:** run `supabase/reviews_schema.sql` in Supabase's SQL Editor (no
+placeholders — works as-is).
+
+**Honesty note:** review submission doesn't currently require proof you
+bought the item (no login needed) — it's asked for right after a real
+purchase, but nothing stops someone from reviewing without buying. If
+that becomes a problem, the fix is tightening
+`supabase/reviews_schema.sql`'s insert policy to check against a real
+order — ask if you want that built.
+
+## Lumina design integration
+
+The catalog's visual design was ported from a custom HTML/CSS site you
+provided ("Lumina"), rebuilt as real React components wired to your actual
+Supabase data, cart logic, Paystack payment, and WhatsApp checkout —
+instead of the static demo data and non-functional cart JS it shipped
+with.
+
+**What's ported and live:**
+- Full color palette (pink/sage/cream/marble) and fonts (Cormorant
+  Garamond + Inter)
+- Dark mode toggle (🌙/☀️ in the nav), remembers your preference
+- Marble page background with light/dark variants
+- Sticky glass nav, mobile hamburger menu
+- Hero section using the uploaded hero photo
+- Product cards in the original style (alternating pink/sage "Add to
+  Cart" buttons)
+- Toast notification ("Added to bag") on every add-to-cart
+- Cart drawer in the original "Your Bag" layout, with our real
+  pay-then-WhatsApp checkout flow inside it
+- Footer, About, and Contact sections restyled to match
+
+**Deliberately left out** (the original had a lot — these didn't make the
+cut yet, ask if you want any built properly):
+- Category filter chips — the demo's categories didn't match our real
+  product data
+- Ingredients section, Routine section, Blog section, Newsletter signup,
+  Quick View modal, floating mobile cart button (redundant with the Bag
+  button already in the nav)
+
+(Star ratings *are* now built — see "Real product ratings" above — using
+real reviews instead of the demo's fake numbers.)
+
+**One real photo is already wired up:** run
+`supabase/assign_lumina_photo.sql` — it matches the uploaded
+`vitamin-c-serum.jpg` to your real "Vitamin C Serum" product, if you have
+one by that exact name. The other four uploaded product photos
+(`cleansing-gel.jpg`, `hydrating-essence.jpg`, `night-repair-cream.jpg`,
+`retinol-serum.jpg`) are sitting in `public/images/` but weren't
+auto-assigned, since their product names don't exactly match anything in
+your real catalog — assigning a "night repair cream" photo to a
+differently-formulated product would misrepresent what's actually in the
+jar. Use them for real matching products via `/admin/products`, or via
+Supabase's Table Editor by setting `image_url` to e.g.
+`/images/retinol-serum.jpg` directly.
+
 ## Setup wizard (do this after your first deploy)
 
 Once your app is live on Vercel with the base Supabase tables created
@@ -193,6 +261,26 @@ phone: sign in, go to `/admin/products`, then "Add to Home Screen" (Chrome)
 or Share → "Add to Home Screen" (iOS Safari) *from that page specifically*
 — it installs with a dark "Admin" icon and opens straight into product
 management, distinct from whatever icon you install from `/catalog`.
+
+## Product photos
+
+Products without a real photo show a colored placeholder on the storefront
+— fine for testing, but a shop full of placeholders never feels like a
+real website. Admin now supports real photo uploads.
+
+**Setup:**
+1. Run `supabase/storage_setup.sql` in Supabase's SQL Editor (no
+   placeholders — creates a public `product-images` bucket).
+2. In `/admin/products`, each product row (and the "Add a product" form)
+   now has a photo field. Choose a file, click Save/Add — it uploads and
+   shows on your live catalog within a minute.
+3. `/admin/products` shows a banner if any products are still missing a
+   photo, so it's easy to see what's left to finish.
+
+**Note:** uploads go through the service role key (server-side only), not
+directly from the browser to Supabase — this keeps the upload path
+consistent with how orders and stock are already handled elsewhere in
+this app, and avoids needing separate Storage RLS policies.
 
 ## Order history, low-stock alerts, and AI descriptions
 

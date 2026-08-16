@@ -63,6 +63,16 @@ export function AddProductForm() {
         className="rounded-md border border-ink/15 px-3 py-2 text-sm"
       />
 
+      <div>
+        <label className="text-xs text-muted-foreground">Product photo</label>
+        <input
+          name="image"
+          type="file"
+          accept="image/*"
+          className="mt-1 block w-full text-sm"
+        />
+      </div>
+
       <button
         type="button"
         onClick={handleGenerate}
