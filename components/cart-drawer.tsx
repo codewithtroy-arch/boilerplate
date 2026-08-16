@@ -55,9 +55,6 @@ export function CartDrawer({
               return;
             }
 
-            // Shown as a link the person taps themselves on the confirmation
-            // screen below — a real click on a real link is never blocked
-            // by the browser, unlike a window.open() from async code.
             setWhatsappLink(
               buildWhatsAppOrderLink(items, total, businessName, whatsappNumber, reference)
             );
@@ -85,19 +82,21 @@ export function CartDrawer({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 rounded-full bg-rose px-6 py-3 text-sm font-medium tracking-wide text-white shadow-lg"
+        className="fixed bottom-6 right-6 z-40 border-[1.5px] border-ink bg-cobalt px-6 py-3 text-sm font-medium uppercase tracking-wide text-paper"
       >
-        Bag {count > 0 && `(${count})`}
+        Bag {count > 0 && `[${count}]`}
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-ink/30">
-          <div className="flex h-full w-full max-w-sm flex-col gap-5 bg-paper p-6">
-            <div className="flex items-center justify-between border-b border-ink/10 pb-4">
-              <h2 className="font-display text-2xl italic text-ink">Your bag</h2>
+        <div className="fixed inset-0 z-50 flex justify-end bg-ink/40">
+          <div className="flex h-full w-full max-w-sm flex-col gap-5 border-l-[1.5px] border-ink bg-paper p-6">
+            <div className="flex items-center justify-between border-b-[1.5px] border-ink pb-4">
+              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink">
+                Your bag
+              </h2>
               <button
                 onClick={() => setOpen(false)}
-                className="text-sm text-muted-foreground underline"
+                className="text-xs uppercase text-ink/60 underline"
               >
                 Close
               </button>
@@ -105,60 +104,61 @@ export function CartDrawer({
 
             {status === 'success' ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-                <p className="font-display text-2xl italic text-ink">Payment confirmed</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="font-display text-xl font-bold uppercase text-ink">
+                  Payment confirmed
+                </p>
+                <p className="text-sm text-ink/60">
                   Tap below to send your order to the shop on WhatsApp.
                 </p>
                 <a
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full rounded-md bg-ink px-3 py-3 text-center text-sm font-medium tracking-wide text-paper transition-colors hover:bg-rose"
+                  className="w-full border-[1.5px] border-ink bg-ink px-3 py-3 text-center text-sm font-medium uppercase tracking-wide text-paper transition-colors hover:bg-cobalt hover:border-cobalt"
                 >
                   Continue to WhatsApp
                 </a>
-                <button
-                  onClick={handleReset}
-                  className="text-xs text-muted-foreground underline"
-                >
+                <button onClick={handleReset} className="text-xs text-ink/50 underline">
                   Done
                 </button>
               </div>
             ) : (
               <>
                 {items.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">Your bag is empty.</p>
+                  <p className="text-sm text-ink/60">Your bag is empty.</p>
                 ) : (
                   <div className="flex flex-1 flex-col gap-4 overflow-y-auto">
                     {items.map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center justify-between gap-2 border-b border-ink/5 pb-3"
+                        className="flex items-center justify-between gap-2 border-b border-ink/10 pb-3"
                       >
                         <div className="flex-1">
                           <p className="text-sm font-medium text-ink">{item.name}</p>
-                          <p className="text-xs text-muted-foreground">
+                          <p className="ref-tag text-xs text-ink/50">
                             ₦{item.price.toLocaleString()} each
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="h-6 w-6 rounded-full border border-ink/20 text-xs"
+                            className="h-6 w-6 border border-ink/30 text-xs"
                           >
                             −
                           </button>
-                          <span className="w-4 text-center text-sm">{item.quantity}</span>
+                          <span className="ref-tag w-4 text-center text-sm">
+                            {item.quantity}
+                          </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="h-6 w-6 rounded-full border border-ink/20 text-xs"
+                            className="h-6 w-6 border border-ink/30 text-xs"
                           >
                             +
                           </button>
                         </div>
                         <button
                           onClick={() => removeItem(item.id)}
-                          className="text-xs text-rose underline"
+                          className="text-xs uppercase text-blush underline"
                         >
                           Remove
                         </button>
@@ -168,10 +168,10 @@ export function CartDrawer({
                 )}
 
                 {items.length > 0 && (
-                  <div className="space-y-3 border-t border-ink/10 pt-4">
+                  <div className="space-y-3 border-t-[1.5px] border-ink pt-4">
                     <div className="flex justify-between text-sm font-medium text-ink">
-                      <span>Total</span>
-                      <span>₦{total.toLocaleString()}</span>
+                      <span className="uppercase">Total</span>
+                      <span className="ref-tag">₦{total.toLocaleString()}</span>
                     </div>
 
                     <input
@@ -179,13 +179,13 @@ export function CartDrawer({
                       placeholder="you@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full rounded-md border border-ink/15 px-3 py-2 text-sm"
+                      className="w-full border border-ink/30 px-3 py-2 text-sm"
                     />
 
                     <button
                       onClick={handlePayAndCheckout}
                       disabled={status === 'paying' || status === 'verifying'}
-                      className="w-full rounded-md bg-ink px-3 py-3 text-sm font-medium tracking-wide text-paper transition-colors hover:bg-rose disabled:opacity-50"
+                      className="w-full border-[1.5px] border-ink bg-ink px-3 py-3 text-sm font-medium uppercase tracking-wide text-paper transition-colors hover:bg-cobalt hover:border-cobalt disabled:opacity-50"
                     >
                       {status === 'paying' && 'Waiting for payment...'}
                       {status === 'verifying' && 'Confirming payment...'}
@@ -193,11 +193,11 @@ export function CartDrawer({
                         `Pay ₦${total.toLocaleString()} & checkout`}
                     </button>
 
-                    {errorMsg && <p className="text-xs text-rose">{errorMsg}</p>}
+                    {errorMsg && <p className="text-xs text-blush">{errorMsg}</p>}
 
                     <button
                       onClick={clear}
-                      className="w-full text-center text-xs text-muted-foreground underline"
+                      className="w-full text-center text-xs uppercase text-ink/50 underline"
                     >
                       Clear bag
                     </button>

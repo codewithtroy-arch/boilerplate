@@ -48,7 +48,7 @@ export default async function AdminOrdersPage() {
 
   return (
     <main className="mx-auto max-w-2xl p-6 pb-24">
-      <h1 className="font-display text-3xl italic text-ink">Orders</h1>
+      <h1 className="font-display text-3xl font-bold uppercase tracking-tight text-ink">Orders</h1>
 
       <div className="mt-6 grid grid-cols-3 gap-3">
         {[
@@ -56,9 +56,9 @@ export default async function AdminOrdersPage() {
           { label: 'This week', value: weekTotal },
           { label: 'All time', value: allTimeTotal },
         ].map((stat) => (
-          <div key={stat.label} className="refined-card rounded-lg bg-paper p-3 text-center">
+          <div key={stat.label} className="label-card rounded-lg bg-paper p-3 text-center">
             <p className="text-xs text-muted-foreground">{stat.label}</p>
-            <p className="mt-1 font-display text-lg italic text-ink">
+            <p className="mt-1 font-display text-lg font-bold uppercase tracking-tight text-ink">
               ₦{stat.value.toLocaleString()}
             </p>
           </div>
@@ -67,7 +67,7 @@ export default async function AdminOrdersPage() {
 
       <div className="mt-8 flex flex-col gap-3">
         {orders.map((order) => (
-          <div key={order.id} className="refined-card rounded-lg bg-paper p-4">
+          <div key={order.id} className="label-card rounded-lg bg-paper p-4">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium text-ink">{order.email}</p>
               <p className="text-sm font-medium text-ink">

@@ -12,7 +12,7 @@ export default async function AdminSettingsPage() {
 
   return (
     <main className="mx-auto max-w-2xl p-6 pb-24">
-      <h1 className="font-display text-3xl italic text-ink">Settings</h1>
+      <h1 className="font-display text-3xl font-bold uppercase tracking-tight text-ink">Settings</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Change these anytime — updates show up on your live shop within a
         minute.
@@ -20,7 +20,7 @@ export default async function AdminSettingsPage() {
 
       <form
         action={updateSettings}
-        className="refined-card mt-6 flex flex-col gap-4 rounded-lg bg-paper p-4"
+        className="label-card mt-6 flex flex-col gap-4 rounded-lg bg-paper p-4"
       >
         <div>
           <label className="text-xs text-muted-foreground">Business name</label>
@@ -79,7 +79,7 @@ export default async function AdminSettingsPage() {
         </button>
       </form>
 
-      <div className="refined-card mt-6 rounded-lg bg-paper p-4">
+      <div className="label-card mt-6 rounded-lg bg-paper p-4">
         <p className="text-sm font-medium text-ink">Payments (Paystack)</p>
         <p className="mt-1 text-xs text-muted-foreground">
           Paystack keys are set as environment variables in Vercel, not

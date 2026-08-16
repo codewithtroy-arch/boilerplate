@@ -32,7 +32,7 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-paper p-8">
       <div className="w-full max-w-sm">
-        <h1 className="mb-6 font-display text-3xl italic text-ink">Sign in</h1>
+        <h1 className="mb-6 font-display text-3xl font-bold uppercase tracking-tight text-ink">Sign in</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
           <input

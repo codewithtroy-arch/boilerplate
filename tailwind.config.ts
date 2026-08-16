@@ -20,25 +20,24 @@ const config: Config = {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        // Catalog storefront palette — soft blush hero, vivid rose accent.
-        // Admin keeps the calmer ivory/gold palette below; the storefront
-        // gets more expressive, since it's the customer-facing "brand".
-        ink: '#241F1F',
-        paper: '#FBF6F1',
-        blush: '#B97A82',
-        sage: '#7C8A6E',
-        gold: '#A98240',
-        blossom: '#FDF1F0',
-        rose: '#E85D75',
+        // Clinical/lab-label palette — stark white/black base, one bold
+        // accent. Grounded in skincare's own visual world (ingredient
+        // labels, dermatology charts, batch codes) rather than a soft
+        // pastel default.
+        ink: '#141414',
+        paper: '#FAFAF8',
+        cobalt: '#1E3FE0',
+        blush: '#D64545', // functional alert/warning red, not decorative
       },
       fontFamily: {
         display: ['var(--font-display)'],
         body: ['var(--font-body)'],
+        mono: ['var(--font-mono)'],
       },
       borderRadius: {
-        lg: '0.75rem',
-        md: '0.5rem',
-        sm: '0.25rem',
+        lg: '0.5rem',
+        md: '0.25rem',
+        sm: '0.125rem',
       },
     },
   },

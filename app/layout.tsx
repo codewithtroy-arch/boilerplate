@@ -1,18 +1,24 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Manrope } from 'next/font/google';
+import { Space_Grotesk, IBM_Plex_Sans, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
 import { ServiceWorkerRegister } from '@/components/service-worker-register';
 
-const display = Cormorant_Garamond({
+const display = Space_Grotesk({
   subsets: ['latin'],
-  weight: ['500', '600'],
+  weight: ['500', '700'],
   variable: '--font-display',
 });
 
-const body = Manrope({
+const body = IBM_Plex_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
   variable: '--font-body',
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500'],
+  variable: '--font-mono',
 });
 
 export const metadata: Metadata = {
@@ -24,7 +30,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#1e40af',
+  themeColor: '#1E3FE0',
   width: 'device-width',
   initialScale: 1,
 };
@@ -35,7 +41,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${display.variable} ${body.variable}`}>
+    <html lang="en" className={`${display.variable} ${body.variable} ${mono.variable}`}>
       <body className="min-h-screen font-body antialiased">
         {children}
         <ServiceWorkerRegister />

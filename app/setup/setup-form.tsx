@@ -32,7 +32,7 @@ export function SetupForm() {
 
   if (confirmMessage) {
     return (
-      <div className="refined-card rounded-lg bg-paper p-6 text-center">
+      <div className="label-card rounded-lg bg-paper p-6 text-center">
         <p className="text-sm text-ink">{confirmMessage}</p>
       </div>
     );

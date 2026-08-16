@@ -14,7 +14,7 @@ export default async function SetupPage() {
   if (alreadySetUp) {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8 text-center">
-        <p className="font-display text-2xl italic text-ink">Already set up</p>
+        <p className="font-display text-2xl font-bold uppercase tracking-tight text-ink">Already set up</p>
         <p className="max-w-sm text-sm text-muted-foreground">
           This shop already has an admin account. Sign in instead, or edit
           your business details from Settings once you're in.
@@ -29,7 +29,7 @@ export default async function SetupPage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-8">
       <div className="w-full max-w-sm">
-        <h1 className="mb-1 font-display text-3xl italic text-ink">Set up your shop</h1>
+        <h1 className="mb-1 font-display text-3xl font-bold uppercase tracking-tight text-ink">Set up your shop</h1>
         <p className="mb-6 text-sm text-muted-foreground">
           Three things and you&apos;re in. Everything else (WhatsApp number,
           payments) you can fill in later from Settings.

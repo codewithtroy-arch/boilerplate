@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --background: 30 33% 97%;
-    --foreground: 25 10% 15%;
-    --primary: 355 22% 55%;
-    --primary-foreground: 30 33% 97%;
-    --muted: 30 20% 93%;
-    --muted-foreground: 25 10% 40%;
-    --border: 30 15% 85%;
+    --background: 60 9% 98%;
+    --foreground: 0 0% 8%;
+    --primary: 227 74% 49%;
+    --primary-foreground: 60 9% 98%;
+    --muted: 0 0% 94%;
+    --muted-foreground: 0 0% 40%;
+    --border: 0 0% 85%;
   }
 
   body {
@@ -19,26 +19,15 @@
 }
 
 @layer utilities {
-  /* Quiet, premium card treatment: thin hairline border, soft shadow. */
-  .refined-card {
-    border: 1px solid theme('colors.ink' / 12%);
-    box-shadow: 0 1px 2px theme('colors.ink' / 4%), 0 8px 24px theme('colors.ink' / 6%);
+  /* Lab-label card: flat, sharp-cornered, precise 1.5px black border.
+     No shadow, no softness — reads like a printed ingredient panel. */
+  .label-card {
+    border: 1.5px solid theme('colors.ink');
   }
 
-  /* Fine gold seal — for the authenticity mark, not a stamped sticker. */
-  .gold-seal {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid theme('colors.gold');
-    border-radius: 9999px;
-  }
-
-  .gold-seal::before {
-    content: '';
-    position: absolute;
-    inset: 3px;
-    border: 1px solid theme('colors.gold' / 50%);
-    border-radius: 9999px;
+  /* Small monospace tag, like a batch/REF code on a product label. */
+  .ref-tag {
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
   }
 }

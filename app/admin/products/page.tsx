@@ -27,7 +27,7 @@ export default async function AdminProductsPage() {
 
   return (
     <main className="mx-auto max-w-2xl p-6 pb-24">
-      <h1 className="font-display text-3xl italic text-ink">Manage products</h1>
+      <h1 className="font-display text-3xl font-bold uppercase tracking-tight text-ink">Manage products</h1>
       <p className="mt-1 text-sm text-muted-foreground">
         Changes here show up on your live catalog within a minute.
       </p>
@@ -48,7 +48,7 @@ export default async function AdminProductsPage() {
             <form
               key={product.id}
               action={updateProduct}
-              className={`refined-card flex flex-col gap-2 rounded-lg bg-paper p-4 sm:flex-row sm:items-center sm:gap-3 ${
+              className={`label-card flex flex-col gap-2 rounded-lg bg-paper p-4 sm:flex-row sm:items-center sm:gap-3 ${
                 isLow ? 'border-blush/50' : ''
               }`}
             >

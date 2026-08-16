@@ -20,7 +20,7 @@ export function AddProductForm() {
   return (
     <form
       action={addProduct}
-      className="refined-card mt-6 flex flex-col gap-3 rounded-lg bg-paper p-4"
+      className="label-card mt-6 flex flex-col gap-3 rounded-lg bg-paper p-4"
     >
       <p className="text-sm font-medium text-ink">Add a product</p>
 
@@ -67,7 +67,7 @@ export function AddProductForm() {
         type="button"
         onClick={handleGenerate}
         disabled={!name.trim() || generating}
-        className="self-start text-xs text-blush underline disabled:opacity-40"
+        className="self-start text-xs text-cobalt underline disabled:opacity-40"
       >
         {generating ? 'Writing...' : '✨ Write description with AI'}
       </button>
