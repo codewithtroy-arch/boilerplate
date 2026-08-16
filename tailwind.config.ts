@@ -20,24 +20,24 @@ const config: Config = {
           DEFAULT: 'hsl(var(--muted))',
           foreground: 'hsl(var(--muted-foreground))',
         },
-        // Clinical/lab-label palette — stark white/black base, one bold
-        // accent. Grounded in skincare's own visual world (ingredient
-        // labels, dermatology charts, batch codes) rather than a soft
-        // pastel default.
-        ink: '#141414',
-        paper: '#FAFAF8',
-        cobalt: '#1E3FE0',
-        blush: '#D64545', // functional alert/warning red, not decorative
+        // Vibrant mobile-app palette — confident, saturated, playful.
+        ink: '#1A1A2E',
+        paper: '#FFFFFF',
+        cobalt: '#FF4785', // magenta — primary accent (kept key name so
+                            // every existing bg-cobalt/text-cobalt class
+                            // across the app updates automatically)
+        violet: '#6C5CE7', // secondary accent
+        sun: '#FFB800',    // tertiary accent
+        blush: '#E63950',  // functional alert/warning red
       },
       fontFamily: {
         display: ['var(--font-display)'],
         body: ['var(--font-body)'],
-        mono: ['var(--font-mono)'],
       },
       borderRadius: {
-        lg: '0.5rem',
-        md: '0.25rem',
-        sm: '0.125rem',
+        lg: '1.25rem',
+        md: '0.75rem',
+        sm: '0.5rem',
       },
     },
   },

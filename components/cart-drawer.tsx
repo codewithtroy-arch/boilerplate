@@ -82,21 +82,19 @@ export function CartDrawer({
     <>
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 border-[1.5px] border-ink bg-cobalt px-6 py-3 text-sm font-medium uppercase tracking-wide text-paper"
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 rounded-full bg-cobalt px-6 py-3.5 text-sm font-bold text-white shadow-xl"
       >
-        Bag {count > 0 && `[${count}]`}
+        🛍️ Bag {count > 0 && <span className="rounded-full bg-white/25 px-2 py-0.5">{count}</span>}
       </button>
 
       {open && (
         <div className="fixed inset-0 z-50 flex justify-end bg-ink/40">
-          <div className="flex h-full w-full max-w-sm flex-col gap-5 border-l-[1.5px] border-ink bg-paper p-6">
-            <div className="flex items-center justify-between border-b-[1.5px] border-ink pb-4">
-              <h2 className="font-display text-xl font-bold uppercase tracking-tight text-ink">
-                Your bag
-              </h2>
+          <div className="flex h-full w-full max-w-sm flex-col gap-5 rounded-l-[1.5rem] bg-white p-6">
+            <div className="flex items-center justify-between border-b border-ink/10 pb-4">
+              <h2 className="font-display text-xl font-bold text-ink">Your bag</h2>
               <button
                 onClick={() => setOpen(false)}
-                className="text-xs uppercase text-ink/60 underline"
+                className="rounded-full bg-muted px-3 py-1 text-xs font-medium text-ink/60"
               >
                 Close
               </button>
@@ -104,17 +102,15 @@ export function CartDrawer({
 
             {status === 'success' ? (
               <div className="flex flex-1 flex-col items-center justify-center gap-4 text-center">
-                <p className="font-display text-xl font-bold uppercase text-ink">
-                  Payment confirmed
-                </p>
-                <p className="text-sm text-ink/60">
+                <p className="font-display text-xl font-bold text-ink">🎉 Payment confirmed</p>
+                <p className="text-sm text-muted-foreground">
                   Tap below to send your order to the shop on WhatsApp.
                 </p>
                 <a
                   href={whatsappLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full border-[1.5px] border-ink bg-ink px-3 py-3 text-center text-sm font-medium uppercase tracking-wide text-paper transition-colors hover:bg-cobalt hover:border-cobalt"
+                  className="w-full rounded-full bg-cobalt px-3 py-3.5 text-center text-sm font-bold text-white shadow-lg"
                 >
                   Continue to WhatsApp
                 </a>
@@ -125,40 +121,40 @@ export function CartDrawer({
             ) : (
               <>
                 {items.length === 0 ? (
-                  <p className="text-sm text-ink/60">Your bag is empty.</p>
+                  <p className="text-sm text-muted-foreground">Your bag is empty.</p>
                 ) : (
                   <div className="flex flex-1 flex-col gap-4 overflow-y-auto">
                     {items.map((item) => (
                       <div
                         key={item.id}
-                        className="flex items-center justify-between gap-2 border-b border-ink/10 pb-3"
+                        className="flex items-center justify-between gap-2 rounded-2xl bg-muted p-3"
                       >
                         <div className="flex-1">
-                          <p className="text-sm font-medium text-ink">{item.name}</p>
-                          <p className="ref-tag text-xs text-ink/50">
+                          <p className="text-sm font-semibold text-ink">{item.name}</p>
+                          <p className="text-xs text-muted-foreground">
                             ₦{item.price.toLocaleString()} each
                           </p>
                         </div>
                         <div className="flex items-center gap-2">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="h-6 w-6 border border-ink/30 text-xs"
+                            className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm shadow-sm"
                           >
                             −
                           </button>
-                          <span className="ref-tag w-4 text-center text-sm">
+                          <span className="w-4 text-center text-sm font-medium">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="h-6 w-6 border border-ink/30 text-xs"
+                            className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-sm shadow-sm"
                           >
                             +
                           </button>
                         </div>
                         <button
                           onClick={() => removeItem(item.id)}
-                          className="text-xs uppercase text-blush underline"
+                          className="text-xs font-medium text-blush"
                         >
                           Remove
                         </button>
@@ -168,10 +164,10 @@ export function CartDrawer({
                 )}
 
                 {items.length > 0 && (
-                  <div className="space-y-3 border-t-[1.5px] border-ink pt-4">
-                    <div className="flex justify-between text-sm font-medium text-ink">
-                      <span className="uppercase">Total</span>
-                      <span className="ref-tag">₦{total.toLocaleString()}</span>
+                  <div className="space-y-3 border-t border-ink/10 pt-4">
+                    <div className="flex justify-between text-base font-bold text-ink">
+                      <span>Total</span>
+                      <span>₦{total.toLocaleString()}</span>
                     </div>
 
                     <input
@@ -179,13 +175,13 @@ export function CartDrawer({
                       placeholder="you@example.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full border border-ink/30 px-3 py-2 text-sm"
+                      className="w-full rounded-full border border-ink/15 px-4 py-2.5 text-sm"
                     />
 
                     <button
                       onClick={handlePayAndCheckout}
                       disabled={status === 'paying' || status === 'verifying'}
-                      className="w-full border-[1.5px] border-ink bg-ink px-3 py-3 text-sm font-medium uppercase tracking-wide text-paper transition-colors hover:bg-cobalt hover:border-cobalt disabled:opacity-50"
+                      className="w-full rounded-full bg-cobalt px-3 py-3.5 text-sm font-bold text-white shadow-lg disabled:opacity-50"
                     >
                       {status === 'paying' && 'Waiting for payment...'}
                       {status === 'verifying' && 'Confirming payment...'}
@@ -197,7 +193,7 @@ export function CartDrawer({
 
                     <button
                       onClick={clear}
-                      className="w-full text-center text-xs uppercase text-ink/50 underline"
+                      className="w-full text-center text-xs text-muted-foreground underline"
                     >
                       Clear bag
                     </button>

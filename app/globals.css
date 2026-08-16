@@ -4,13 +4,13 @@
 
 @layer base {
   :root {
-    --background: 60 9% 98%;
-    --foreground: 0 0% 8%;
-    --primary: 227 74% 49%;
-    --primary-foreground: 60 9% 98%;
-    --muted: 0 0% 94%;
-    --muted-foreground: 0 0% 40%;
-    --border: 0 0% 85%;
+    --background: 0 0% 100%;
+    --foreground: 240 24% 15%;
+    --primary: 337 100% 65%;
+    --primary-foreground: 0 0% 100%;
+    --muted: 240 20% 96%;
+    --muted-foreground: 240 10% 45%;
+    --border: 240 15% 90%;
   }
 
   body {
@@ -19,15 +19,15 @@
 }
 
 @layer utilities {
-  /* Lab-label card: flat, sharp-cornered, precise 1.5px black border.
-     No shadow, no softness — reads like a printed ingredient panel. */
+  /* App-style card: rounded, soft shadow — the default surface across
+     the whole app now (catalog cards, admin panels, forms). */
   .label-card {
-    border: 1.5px solid theme('colors.ink');
+    border-radius: 1.25rem;
+    box-shadow: 0 2px 8px theme('colors.ink' / 6%), 0 8px 24px theme('colors.ink' / 8%);
   }
 
-  /* Small monospace tag, like a batch/REF code on a product label. */
-  .ref-tag {
-    font-family: var(--font-mono);
-    letter-spacing: 0.02em;
+  /* Vivid two-tone gradient, used for the hero and other bold accents. */
+  .gradient-hero {
+    background: linear-gradient(135deg, theme('colors.cobalt'), theme('colors.violet'));
   }
 }
