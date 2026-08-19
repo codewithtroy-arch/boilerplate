@@ -28,11 +28,9 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
 
   if (products.length === 0) {
     return (
-      <div className="label-card bg-white p-8 text-center dark:bg-[#1e1d1c]">
-        <p className="font-display text-xl text-ink dark:text-[#f2f0ed]">
-          Nothing listed yet
-        </p>
-        <p className="mt-1 text-sm text-text-light dark:text-[#a8a49e]">
+      <div className="rounded-2xl border border-black/5 bg-white/80 p-10 text-center backdrop-blur-sm dark:border-white/5 dark:bg-[#1e1d1c]/80">
+        <p className="font-display text-2xl text-ink dark:text-[#f2f0ed]">Nothing listed yet</p>
+        <p className="mt-2 text-sm text-text-light dark:text-[#a8a49e]">
           Add products in Supabase&apos;s Table Editor and they&apos;ll appear here.
         </p>
       </div>
@@ -43,17 +41,18 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
   const filtered =
     activeCategory === 'all' ? products : products.filter((p) => p.category === activeCategory);
 
-  const accents: Array<'pink' | 'sage'> = ['pink', 'sage'];
+  const accents: Array<'pink' | 'sage' | 'cream'> = ['pink', 'sage', 'cream'];
 
   return (
     <>
-      <div className="mb-5 flex flex-wrap gap-2">
+      {/* Filter chips */}
+      <div className="mb-8 flex flex-wrap gap-2.5">
         <button
           onClick={() => setActiveCategory('all')}
-          className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
+          className={`rounded-full border px-4 py-2 text-[13px] font-medium transition-all ${
             activeCategory === 'all'
-              ? 'bg-ink text-marble dark:bg-pink-dark dark:text-[#1a1510]'
-              : 'bg-pink-soft text-ink dark:bg-white/10 dark:text-[#f2f0ed]'
+              ? 'border-ink bg-ink text-marble dark:border-pink-dark dark:bg-pink-dark dark:text-[#1a1510]'
+              : 'border-black/10 bg-transparent text-text-light hover:border-pink hover:text-ink dark:border-white/10 dark:text-[#a8a49e] dark:hover:text-[#f2f0ed]'
           }`}
         >
           All
@@ -62,10 +61,10 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`rounded-full px-4 py-1.5 text-xs font-medium capitalize transition-colors ${
+            className={`rounded-full border px-4 py-2 text-[13px] font-medium capitalize transition-all ${
               activeCategory === cat
-                ? 'bg-ink text-marble dark:bg-pink-dark dark:text-[#1a1510]'
-                : 'bg-pink-soft text-ink dark:bg-white/10 dark:text-[#f2f0ed]'
+                ? 'border-ink bg-ink text-marble dark:border-pink-dark dark:bg-pink-dark dark:text-[#1a1510]'
+                : 'border-black/10 bg-transparent text-text-light hover:border-pink hover:text-ink dark:border-white/10 dark:text-[#a8a49e] dark:hover:text-[#f2f0ed]'
             }`}
           >
             {CATEGORY_LABELS[cat] ?? cat}
@@ -73,17 +72,25 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
         ))}
       </div>
 
-      <div className="grid grid-cols-2 gap-5 sm:grid-cols-3">
+      {/* Product cards */}
+      <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
         {filtered.map((product, i) => {
           const accent = accents[i % accents.length];
+          const btnClass =
+            accent === 'pink'
+              ? 'bg-pink hover:bg-pink-dark text-white'
+              : accent === 'sage'
+                ? 'bg-sage hover:bg-sage-dark text-ink'
+                : 'bg-cream hover:brightness-95 text-[#3a2a1a]';
+
           return (
             <article
               key={product.id}
-              className="label-card overflow-hidden bg-white transition-shadow hover:shadow-lg dark:bg-[#1e1d1c]"
+              className="group flex flex-col overflow-hidden rounded-2xl border border-black/[0.04] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] dark:border-white/[0.06] dark:bg-[#1e1d1c] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
             >
               <button
                 onClick={() => setQuickViewProduct(product)}
-                className="relative block aspect-square w-full bg-pink-soft dark:bg-[#3a2a2e]"
+                className="relative block aspect-[4/5] w-full overflow-hidden bg-pink-soft dark:bg-[#3a2a2e]"
                 aria-label={`Quick view ${product.name}`}
               >
                 {product.image_url ? (
@@ -92,41 +99,42 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
                     alt={product.name}
                     fill
                     sizes="(max-width: 640px) 50vw, 33vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center">
-                    <span className="font-display text-3xl italic text-ink/20 dark:text-white/20">
+                    <span className="font-display text-4xl italic text-ink/20 dark:text-white/20">
                       {product.name.charAt(0)}
                     </span>
                   </div>
                 )}
               </button>
 
-              <div className="flex flex-col gap-1.5 p-3.5">
-                <h3 className="font-display text-base text-ink dark:text-[#f2f0ed]">
+              <div className="flex flex-1 flex-col gap-1.5 p-4 sm:p-5">
+                <h3 className="font-display text-[15px] font-medium leading-snug text-ink dark:text-[#f2f0ed] sm:text-base">
                   {product.name}
                 </h3>
 
                 {product.avgRating !== null && (
                   <div className="flex items-center gap-1 text-xs text-text-light dark:text-[#a8a49e]">
-                    <span className="text-pink-dark">★</span>
+                    <span className="text-[#f5c542]">★</span>
                     <span className="font-medium text-ink dark:text-[#f2f0ed]">
                       {product.avgRating.toFixed(1)}
                     </span>
-                    <span>({product.reviewCount})</span>
+                    <span className="opacity-60">({product.reviewCount})</span>
                   </div>
                 )}
 
-                <div className="flex items-center justify-between pt-1">
-                  <span className="text-sm font-semibold text-ink dark:text-[#f2f0ed]">
+                <div className="mt-auto flex items-center justify-between gap-2 pt-3">
+                  <span className="text-[15px] font-semibold text-ink dark:text-[#f2f0ed]">
                     ₦{product.price.toLocaleString()}
                   </span>
                   <button
-                    onClick={() => addItem(product)}
-                    className={`rounded-full px-3.5 py-2 text-xs font-medium text-ink transition-transform active:scale-95 ${
-                      accent === 'pink' ? 'bg-pink' : 'bg-sage'
-                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      addItem(product);
+                    }}
+                    className={`rounded-full px-3.5 py-2 text-[11px] font-medium transition-all active:scale-95 sm:px-4 sm:text-xs ${btnClass}`}
                   >
                     Add to Cart
                   </button>
