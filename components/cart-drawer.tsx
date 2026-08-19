@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useCart, type CartItem } from '@/lib/cart-context';
 import { buildWhatsAppOrderLink } from '@/lib/whatsapp-checkout';
 import { payWithPaystack } from '@/lib/paystack';
@@ -92,7 +93,7 @@ export function CartDrawer({
 
   return (
     <>
-      {/* Floating bag button */}
+      {/* Floating bag — Lumina style */}
       <button
         onClick={() => setOpen(true)}
         className="fixed bottom-6 right-6 z-40 flex h-14 items-center gap-2.5 rounded-full bg-pink px-5 text-sm font-medium text-white shadow-[0_8px_28px_rgba(232,154,170,0.45)] transition-all hover:scale-105 hover:bg-pink-dark"
@@ -127,9 +128,10 @@ export function CartDrawer({
             onClick={() => setOpen(false)}
           />
 
-          <div className="relative flex h-full w-full max-w-[420px] flex-col bg-white shadow-[-20px_0_60px_rgba(0,0,0,0.15)] dark:bg-[#1c1b1a]">
-            <div className="flex items-center justify-between border-b border-black/5 px-6 py-5 dark:border-white/5">
-              <h3 className="font-display text-2xl font-medium text-ink dark:text-[#f2f0ed]">
+          <div className="cart-slide-in relative flex h-full w-full max-w-[420px] flex-col bg-white shadow-[-20px_0_60px_rgba(0,0,0,0.15)] dark:bg-[#1c1b1a]">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-black/5 px-7 py-5 dark:border-white/5">
+              <h3 className="font-display text-2xl font-medium tracking-wide text-ink dark:text-[#f2f0ed]">
                 Your Bag
               </h3>
               <button
@@ -137,44 +139,28 @@ export function CartDrawer({
                 aria-label="Close cart"
                 className="flex h-9 w-9 items-center justify-center rounded-full text-ink/60 transition-colors hover:bg-black/5 dark:text-[#a8a49e] dark:hover:bg-white/10"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="h-5 w-5"
-                >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
 
-            <div className="flex-1 overflow-y-auto px-6 py-5">
+            {/* Body */}
+            <div className="flex-1 overflow-y-auto px-7 py-5">
               {status === 'success' ? (
                 <div className="flex h-full flex-col items-center justify-center gap-5 text-center">
-                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-sage/30 text-2xl">
-                    ✓
-                  </div>
-                  <p className="font-display text-2xl text-ink dark:text-[#f2f0ed]">
-                    Payment confirmed
-                  </p>
+                  <div className="flex h-14 w-14 items-center justify-center rounded-full bg-sage/30 text-2xl">✓</div>
+                  <p className="font-display text-2xl text-ink dark:text-[#f2f0ed]">Payment confirmed</p>
                   <p className="max-w-xs text-sm text-text-light dark:text-[#a8a49e]">
                     Tap below to send your order to the shop on WhatsApp.
                   </p>
-
                   {purchasedItems.length > 0 && (
                     <div className="flex w-full flex-col gap-2">
                       {purchasedItems.map((item) => (
-                        <ReviewPrompt
-                          key={item.id}
-                          productId={item.id}
-                          productName={item.name}
-                        />
+                        <ReviewPrompt key={item.id} productId={item.id} productName={item.name} />
                       ))}
                     </div>
                   )}
-
                   <a
                     href={whatsappLink}
                     target="_blank"
@@ -183,21 +169,14 @@ export function CartDrawer({
                   >
                     Continue to WhatsApp
                   </a>
-                  <button
-                    onClick={handleReset}
-                    className="text-xs text-text-light underline dark:text-[#a8a49e]"
-                  >
+                  <button onClick={handleReset} className="text-xs text-text-light underline dark:text-[#a8a49e]">
                     Done
                   </button>
                 </div>
               ) : items.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center gap-3 text-center">
-                  <p className="text-base font-medium text-ink dark:text-[#f2f0ed]">
-                    Your bag is empty
-                  </p>
-                  <p className="text-xs text-text-light dark:text-[#a8a49e]">
-                    Discover products you&apos;ll love
-                  </p>
+                  <p className="font-display text-xl text-ink dark:text-[#f2f0ed]">Your bag is empty</p>
+                  <p className="text-sm text-text-light dark:text-[#a8a49e]">Discover products you&apos;ll love</p>
                   <button
                     onClick={() => setOpen(false)}
                     className="mt-4 rounded-full bg-pink px-7 py-3 text-sm font-medium text-white transition-all hover:bg-pink-dark"
@@ -206,47 +185,55 @@ export function CartDrawer({
                   </button>
                 </div>
               ) : (
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col">
                   {items.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-start justify-between gap-3 border-b border-black/5 pb-5 dark:border-white/5"
+                      className="flex gap-4 border-b border-black/5 py-4 dark:border-white/5"
                     >
-                      <div className="flex-1">
-                        <p className="text-[15px] font-medium text-ink dark:text-[#f2f0ed]">
-                          {item.name}
+                      {/* Product image — key Lumina cart feature */}
+                      <div className="relative h-[72px] w-[72px] flex-shrink-0 overflow-hidden rounded-[10px] bg-marble dark:bg-[#2a2826]">
+                        {item.image_url ? (
+                          <Image
+                            src={item.image_url}
+                            alt={item.name}
+                            fill
+                            sizes="72px"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center font-display text-lg text-ink/20">
+                            {item.name.charAt(0)}
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex flex-1 flex-col justify-center">
+                        <p className="text-[15px] font-medium text-ink dark:text-[#f2f0ed]">{item.name}</p>
+                        <p className="mt-0.5 text-sm text-text-light dark:text-[#a8a49e]">
+                          ₦{item.price.toLocaleString()}
                         </p>
-                        <p className="mt-0.5 text-xs text-text-light dark:text-[#a8a49e]">
-                          ₦{item.price.toLocaleString()} each
-                        </p>
-                        <div className="mt-3 flex items-center gap-2.5">
+                        <div className="mt-2.5 flex items-center gap-2.5">
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                            className="flex h-7 w-7 items-center justify-center rounded-full border border-black/10 text-sm transition-colors hover:bg-pink-soft dark:border-white/10 dark:hover:bg-white/10"
+                            className="flex h-[26px] w-[26px] items-center justify-center rounded-full border border-black/10 text-sm transition-colors hover:bg-pink-soft dark:border-white/10 dark:hover:bg-white/10"
                           >
                             −
                           </button>
-                          <span className="min-w-[1.25rem] text-center text-sm font-medium">
-                            {item.quantity}
-                          </span>
+                          <span className="min-w-[1.25rem] text-center text-sm">{item.quantity}</span>
                           <button
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                            className="flex h-7 w-7 items-center justify-center rounded-full border border-black/10 text-sm transition-colors hover:bg-pink-soft dark:border-white/10 dark:hover:bg-white/10"
+                            className="flex h-[26px] w-[26px] items-center justify-center rounded-full border border-black/10 text-sm transition-colors hover:bg-pink-soft dark:border-white/10 dark:hover:bg-white/10"
                           >
                             +
                           </button>
+                          <button
+                            onClick={() => removeItem(item.id)}
+                            className="ml-auto text-xs text-blush underline underline-offset-2"
+                          >
+                            Remove
+                          </button>
                         </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-semibold text-ink dark:text-[#f2f0ed]">
-                          ₦{(item.price * item.quantity).toLocaleString()}
-                        </p>
-                        <button
-                          onClick={() => removeItem(item.id)}
-                          className="mt-2 text-xs text-blush underline underline-offset-2"
-                        >
-                          Remove
-                        </button>
                       </div>
                     </div>
                   ))}
@@ -254,11 +241,12 @@ export function CartDrawer({
               )}
             </div>
 
+            {/* Footer checkout */}
             {items.length > 0 && status !== 'success' && (
-              <div className="space-y-3 border-t border-black/5 px-6 py-5 dark:border-white/5">
-                <div className="flex justify-between text-sm">
+              <div className="space-y-3.5 border-t border-black/5 px-7 py-6 dark:border-white/5">
+                <div className="flex justify-between text-[15px]">
                   <span className="text-text-light dark:text-[#a8a49e]">Subtotal</span>
-                  <strong className="text-base text-ink dark:text-[#f2f0ed]">
+                  <strong className="font-display text-lg font-medium text-ink dark:text-[#f2f0ed]">
                     ₦{total.toLocaleString()}
                   </strong>
                 </div>
@@ -268,13 +256,13 @@ export function CartDrawer({
                   placeholder="you@example.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full rounded-full border border-black/10 bg-marble/50 px-4 py-3 text-sm outline-none transition-colors focus:border-pink dark:border-white/10 dark:bg-transparent dark:text-[#f2f0ed]"
+                  className="w-full rounded-full border border-black/10 bg-marble/60 px-5 py-3 text-sm outline-none transition-colors focus:border-pink dark:border-white/10 dark:bg-transparent dark:text-[#f2f0ed]"
                 />
 
                 <button
                   onClick={handlePayAndCheckout}
                   disabled={status === 'paying' || status === 'verifying'}
-                  className="w-full rounded-full bg-pink px-3 py-3.5 text-sm font-medium text-white shadow-[0_8px_24px_rgba(232,154,170,0.35)] transition-all hover:bg-pink-dark disabled:opacity-50 dark:bg-pink-dark dark:text-[#1a1510]"
+                  className="w-full rounded-full bg-pink py-3.5 text-sm font-medium text-white shadow-[0_8px_24px_rgba(232,154,170,0.35)] transition-all hover:bg-pink-dark disabled:opacity-50 dark:bg-pink-dark dark:text-[#1a1510]"
                 >
                   {status === 'paying' && 'Waiting for payment...'}
                   {status === 'verifying' && 'Confirming payment...'}

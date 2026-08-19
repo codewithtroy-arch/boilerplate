@@ -43,17 +43,20 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
 
   const accents: Array<'pink' | 'sage' | 'cream'> = ['pink', 'sage', 'cream'];
 
+  const chipBase =
+    'rounded-full border px-[18px] py-2 text-[13px] font-medium transition-all duration-200';
+  const chipIdle =
+    'border-black/[0.08] bg-transparent text-text-light hover:border-pink hover:text-ink dark:border-white/10 dark:text-[#a8a49e] dark:hover:text-[#f2f0ed]';
+  const chipActive =
+    'border-ink bg-ink text-marble dark:border-pink-dark dark:bg-pink-dark dark:text-[#1a1510]';
+
   return (
     <>
-      {/* Filter chips */}
-      <div className="mb-8 flex flex-wrap gap-2.5">
+      {/* Category filters — match Lumina exactly */}
+      <div className="mb-9 flex flex-wrap gap-2.5">
         <button
           onClick={() => setActiveCategory('all')}
-          className={`rounded-full border px-4 py-2 text-[13px] font-medium transition-all ${
-            activeCategory === 'all'
-              ? 'border-ink bg-ink text-marble dark:border-pink-dark dark:bg-pink-dark dark:text-[#1a1510]'
-              : 'border-black/10 bg-transparent text-text-light hover:border-pink hover:text-ink dark:border-white/10 dark:text-[#a8a49e] dark:hover:text-[#f2f0ed]'
-          }`}
+          className={`${chipBase} ${activeCategory === 'all' ? chipActive : chipIdle}`}
         >
           All
         </button>
@@ -61,10 +64,8 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
           <button
             key={cat}
             onClick={() => setActiveCategory(cat)}
-            className={`rounded-full border px-4 py-2 text-[13px] font-medium capitalize transition-all ${
-              activeCategory === cat
-                ? 'border-ink bg-ink text-marble dark:border-pink-dark dark:bg-pink-dark dark:text-[#1a1510]'
-                : 'border-black/10 bg-transparent text-text-light hover:border-pink hover:text-ink dark:border-white/10 dark:text-[#a8a49e] dark:hover:text-[#f2f0ed]'
+            className={`${chipBase} capitalize ${
+              activeCategory === cat ? chipActive : chipIdle
             }`}
           >
             {CATEGORY_LABELS[cat] ?? cat}
@@ -72,8 +73,7 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
         ))}
       </div>
 
-      {/* Product cards */}
-      <div className="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3">
+      <div className="grid grid-cols-2 gap-5 sm:gap-7 md:grid-cols-3">
         {filtered.map((product, i) => {
           const accent = accents[i % accents.length];
           const btnClass =
@@ -86,7 +86,7 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
           return (
             <article
               key={product.id}
-              className="group flex flex-col overflow-hidden rounded-2xl border border-black/[0.04] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)] dark:border-white/[0.06] dark:bg-[#1e1d1c] dark:shadow-[0_4px_24px_rgba(0,0,0,0.3)]"
+              className="group flex flex-col overflow-hidden rounded-[20px] border border-black/[0.04] bg-white shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] dark:border-white/[0.06] dark:bg-[#1e1d1c]"
             >
               <button
                 onClick={() => setQuickViewProduct(product)}
@@ -111,7 +111,7 @@ export function ProductGrid({ products }: { products: ProductWithRating[] }) {
               </button>
 
               <div className="flex flex-1 flex-col gap-1.5 p-4 sm:p-5">
-                <h3 className="font-display text-[15px] font-medium leading-snug text-ink dark:text-[#f2f0ed] sm:text-base">
+                <h3 className="font-display text-[17px] font-medium leading-snug tracking-wide text-ink dark:text-[#f2f0ed]">
                   {product.name}
                 </h3>
 

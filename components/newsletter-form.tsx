@@ -17,7 +17,7 @@ export function NewsletterForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto mt-8 flex w-full max-w-md flex-col gap-3 sm:flex-row"
+      className="mx-auto mt-7 flex w-full max-w-[480px] flex-col gap-3 sm:flex-row sm:gap-3"
     >
       <input
         type="email"
@@ -25,11 +25,11 @@ export function NewsletterForm() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Your email address"
-        className="flex-1 rounded-full border border-black/10 bg-white/80 px-5 py-3.5 text-sm text-ink outline-none transition-colors placeholder:text-text-light focus:border-pink dark:border-white/10 dark:bg-white/5 dark:text-[#f2f0ed]"
+        className="flex-1 rounded-full border border-black/10 bg-marble px-5 py-4 text-sm text-ink outline-none transition-colors placeholder:text-text-light focus:border-pink dark:border-white/10 dark:bg-white/5 dark:text-[#f2f0ed]"
       />
       <button
         type="submit"
-        className="rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-marble transition-all hover:scale-[1.02] dark:bg-pink-dark dark:text-[#1a1510]"
+        className="rounded-full bg-pink px-7 py-4 text-sm font-medium text-white transition-colors hover:bg-pink-dark whitespace-nowrap"
       >
         {done ? 'Subscribed ✓' : 'Subscribe'}
       </button>

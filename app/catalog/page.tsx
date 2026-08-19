@@ -83,17 +83,17 @@ const ROUTINE = [
   {
     step: '01',
     title: 'Cleanse',
-    desc: 'Start with a gentle cleanse to purify and prep the skin.',
+    desc: 'Start with our Hydrating Essence to gently purify and prep the skin.',
   },
   {
     step: '02',
     title: 'Treat',
-    desc: 'Apply serums for brightening, repair, and antioxidant protection.',
+    desc: 'Apply Vitamin C Serum for brightening and antioxidant protection.',
   },
   {
     step: '03',
     title: 'Nourish',
-    desc: 'Seal with cream to restore and renew while you rest.',
+    desc: 'Seal with Night Repair Cream to restore and renew while you sleep.',
   },
 ];
 
@@ -165,7 +165,7 @@ export default async function CatalogPage() {
         <nav className="sticky top-0 z-30 flex h-[72px] items-center justify-between border-b border-black/[0.04] bg-white/90 px-6 backdrop-blur-xl dark:border-white/[0.06] dark:bg-[#1c1b1a]/90 md:px-12">
           <a
             href="#home"
-            className="font-display text-[1.65rem] font-semibold tracking-[0.12em] text-ink dark:text-[#f2f0ed]"
+            className="logo-lumina text-[1.75rem] text-ink dark:text-[#f2f0ed]"
           >
             {brand}
           </a>
@@ -422,34 +422,34 @@ export default async function CatalogPage() {
           </div>
         </section>
 
-        {/* ─── Daily Ritual ─── */}
-        <section id="routine" className="scroll-mt-16 px-6 py-16 md:px-12">
-          <div className="mx-auto max-w-6xl">
-            <div className="mb-10 flex items-end justify-between gap-4">
-              <h2 className="font-display text-3xl font-medium text-ink dark:text-[#f2f0ed] sm:text-4xl">
+        {/* ─── Daily Ritual — exact Lumina layout ─── */}
+        <section
+          id="routine"
+          className="scroll-mt-16 border-y border-black/5 bg-white/50 py-20 backdrop-blur-sm dark:border-white/5 dark:bg-[#1e1d1c]/40"
+        >
+          <div className="mx-auto max-w-6xl px-6 md:px-12">
+            <div className="mb-12 flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-end">
+              <h2 className="font-display text-3xl font-medium tracking-wide text-ink dark:text-[#f2f0ed] sm:text-4xl">
                 Your Daily Ritual
               </h2>
               <a
                 href="#products"
-                className="hidden text-sm font-medium text-pink-dark transition-colors hover:underline sm:inline"
+                className="text-sm font-medium text-pink-dark transition-colors hover:underline"
               >
                 Shop the routine →
               </a>
             </div>
 
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8">
               {ROUTINE.map((step) => (
-                <div
-                  key={step.step}
-                  className="rounded-2xl border border-black/[0.04] bg-white p-8 dark:border-white/[0.06] dark:bg-[#1e1d1c]"
-                >
-                  <span className="font-display text-4xl font-medium text-pink/60 dark:text-pink-dark/50">
+                <div key={step.step} className="px-4 py-6 text-center">
+                  <div className="font-display text-[42px] font-medium leading-none text-pink opacity-85 dark:text-pink-dark">
                     {step.step}
-                  </span>
-                  <h3 className="mt-4 text-lg font-medium text-ink dark:text-[#f2f0ed]">
+                  </div>
+                  <h3 className="mt-4 text-xl font-medium text-ink dark:text-[#f2f0ed]">
                     {step.title}
                   </h3>
-                  <p className="mt-2 text-[14px] leading-relaxed text-text-light dark:text-[#a8a49e]">
+                  <p className="mx-auto mt-3 max-w-[260px] text-sm leading-relaxed text-text-light dark:text-[#a8a49e]">
                     {step.desc}
                   </p>
                 </div>
@@ -528,14 +528,14 @@ export default async function CatalogPage() {
           </div>
         </section>
 
-        {/* ─── Newsletter ─── */}
-        <section className="px-6 py-16 md:px-12">
+        {/* ─── Newsletter — Lumina card style ─── */}
+        <section className="px-6 pb-16 pt-4 md:px-12">
           <div className="mx-auto max-w-6xl">
-            <div className="rounded-3xl bg-ink px-8 py-14 text-center dark:bg-[#2a2420] md:px-16">
-              <h2 className="font-display text-3xl font-medium text-marble sm:text-4xl">
+            <div className="flex flex-col items-center rounded-3xl border border-black/[0.04] bg-white px-8 py-14 text-center shadow-[0_4px_24px_rgba(0,0,0,0.03)] dark:border-white/[0.06] dark:bg-[#1e1d1c] md:px-16">
+              <h2 className="font-display text-3xl font-medium tracking-wide text-ink dark:text-[#f2f0ed] sm:text-4xl">
                 Join the Glow List
               </h2>
-              <p className="mx-auto mt-3 max-w-md text-[15px] text-marble/70">
+              <p className="mx-auto mt-3 max-w-[420px] text-[15px] text-text-light dark:text-[#a8a49e]">
                 Be the first to know about new launches, exclusive offers, and skincare rituals.
               </p>
               <NewsletterForm />
@@ -543,47 +543,51 @@ export default async function CatalogPage() {
           </div>
         </section>
 
-        {/* ─── Footer ─── */}
-        <footer className="border-t border-black/5 px-6 py-14 dark:border-white/5 md:px-12">
+        {/* ─── Footer — full Lumina layout ─── */}
+        <footer className="border-t border-black/5 bg-white/60 px-6 py-16 backdrop-blur-sm dark:border-white/5 dark:bg-[#1e1d1c]/50 md:px-12 md:py-16">
           <div className="mx-auto max-w-6xl">
-            <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-10">
               {/* Brand */}
-              <div className="sm:col-span-2 lg:col-span-1">
-                <a
-                  href="#home"
-                  className="font-display text-2xl font-semibold tracking-[0.1em] text-ink dark:text-[#f2f0ed]"
-                >
+              <div>
+                <a href="#home" className="logo-lumina block text-2xl text-ink dark:text-[#f2f0ed]">
                   {brand}
                 </a>
-                <p className="mt-3 max-w-xs text-[13px] leading-relaxed text-text-light dark:text-[#a8a49e]">
+                <p className="mt-4 max-w-[280px] text-[13px] leading-relaxed text-text-light dark:text-[#a8a49e]">
                   Premium skincare crafted with science-led botanicals for visible, lasting
                   radiance.
                 </p>
-                <div className="mt-5 flex gap-3">
-                  {['Instagram', 'TikTok', 'Pinterest'].map((social) => (
-                    <a
-                      key={social}
-                      href="#"
-                      aria-label={social}
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-black/10 text-xs text-ink/60 transition-colors hover:border-pink hover:text-pink-dark dark:border-white/10 dark:text-[#a8a49e]"
-                    >
-                      {social[0]}
-                    </a>
-                  ))}
+                <div className="mt-5 flex gap-3.5">
+                  <a href="#" aria-label="Instagram" className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 3.75h9A3.75 3.75 0 0 1 20.25 7.5v9a3.75 3.75 0 0 1-3.75 3.75h-9A3.75 3.75 0 0 1 3.75 16.5v-9A3.75 3.75 0 0 1 7.5 3.75Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75h.008v.008H17.25V6.75Z" />
+                    </svg>
+                  </a>
+                  <a href="#" aria-label="TikTok" className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 9v10.5a3 3 0 0 0 3 3 3 3 0 0 0 3-3V9m0 0V6.75A2.25 2.25 0 0 1 17.25 4.5h.75" />
+                    </svg>
+                  </a>
+                  <a href="#" aria-label="Pinterest" className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-3.75a.75.75 0 0 1-.75-.75V12a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-.75.75Z" />
+                    </svg>
+                  </a>
                 </div>
               </div>
 
               {/* Shop */}
               <div>
-                <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-ink dark:text-[#f2f0ed]">
+                <h4 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-ink dark:text-[#f2f0ed]">
                   Shop
                 </h4>
-                <div className="mt-4 flex flex-col gap-2.5">
+                <div className="mt-[18px] flex flex-col gap-2.5">
                   {[
-                    { href: '#products', label: 'All products' },
                     { href: '#products', label: 'Bestsellers' },
-                    { href: '#routine', label: 'The Ritual' },
-                    { href: '#ingredients', label: 'Ingredients' },
+                    { href: '#products', label: 'Serums' },
+                    { href: '#products', label: 'Moisturizers' },
+                    { href: '#products', label: 'Gift Sets' },
                   ].map((link) => (
                     <a
                       key={link.label}
@@ -598,15 +602,15 @@ export default async function CatalogPage() {
 
               {/* About */}
               <div>
-                <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-ink dark:text-[#f2f0ed]">
+                <h4 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-ink dark:text-[#f2f0ed]">
                   About
                 </h4>
-                <div className="mt-4 flex flex-col gap-2.5">
+                <div className="mt-[18px] flex flex-col gap-2.5">
                   {[
                     { href: '#about', label: 'Our Story' },
+                    { href: '#routine', label: 'The Ritual' },
                     { href: '#blog', label: 'Journal' },
-                    { href: '#trust', label: 'Reviews' },
-                    { href: '#contact', label: 'Contact' },
+                    { href: '#ingredients', label: 'Ingredients' },
                   ].map((link) => (
                     <a
                       key={link.label}
@@ -621,28 +625,30 @@ export default async function CatalogPage() {
 
               {/* Help */}
               <div>
-                <h4 className="text-xs font-semibold uppercase tracking-[0.12em] text-ink dark:text-[#f2f0ed]">
+                <h4 className="text-[13px] font-semibold uppercase tracking-[0.06em] text-ink dark:text-[#f2f0ed]">
                   Help
                 </h4>
-                <div className="mt-4 flex flex-col gap-2.5">
-                  {['Shipping & Returns', 'FAQ', 'Privacy Policy', 'Terms of Service'].map(
-                    (label) => (
-                      <span
-                        key={label}
-                        className="cursor-default text-[13px] text-text-light dark:text-[#a8a49e]"
-                      >
-                        {label}
-                      </span>
-                    )
-                  )}
+                <div className="mt-[18px] flex flex-col gap-2.5">
+                  {[
+                    { href: '#contact', label: 'Shipping & Returns' },
+                    { href: '#contact', label: 'FAQ' },
+                    { href: '#contact', label: 'Contact Us' },
+                    { href: '#contact', label: 'Privacy Policy' },
+                  ].map((link) => (
+                    <a
+                      key={link.label}
+                      href={link.href}
+                      className="text-[13px] text-text-light transition-colors hover:text-pink-dark dark:text-[#a8a49e]"
+                    >
+                      {link.label}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-black/5 pt-8 text-xs text-text-light dark:border-white/5 dark:text-[#a8a49e] sm:flex-row">
-              <span>
-                © {new Date().getFullYear()} {brand}. All rights reserved.
-              </span>
+            <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-black/5 pt-7 text-[13px] text-text-light dark:border-white/5 dark:text-[#a8a49e] sm:flex-row">
+              <span>© {new Date().getFullYear()} {brand}. All rights reserved.</span>
               <span>Crafted with care for radiant skin</span>
             </div>
           </div>

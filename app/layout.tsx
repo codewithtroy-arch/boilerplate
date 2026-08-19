@@ -17,8 +17,8 @@ const body = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'Shop',
-  description: 'Next.js + Supabase boilerplate for custom-coded micro-SaaS apps',
+  title: 'LUMINA — Illuminate Your Radiance',
+  description: 'Premium skincare. Science-led botanicals. Visible results.',
   icons: {
     icon: '/icons/icon-192.png',
   },
@@ -37,7 +37,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body className="min-h-screen bg-marble font-body text-ink antialiased dark:bg-[#121110] dark:text-[#f2f0ed]">
+      <body className="min-h-screen bg-marble font-body text-ink antialiased dark:bg-[#121110] dark:text-[#f2f0ed]" style={{ fontFamily: "var(--font-body), Inter, system-ui, sans-serif" }}>
         {children}
         <ServiceWorkerRegister />
       </body>

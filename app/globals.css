@@ -12,11 +12,23 @@
     --muted-foreground: 0 0% 42%;
     --border: 0 0% 88%;
   }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-body), 'Inter', system-ui, sans-serif;
+  }
+
+  .font-display {
+    font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif !important;
+  }
 }
 
 @layer utilities {
-  /* Marble page background with a soft readable overlay, ported from
-     the uploaded design. Light/dark swap via the .dark class. */
   .marble-bg {
     background-image: url('/images/marble-light.jpg');
     background-size: cover;
@@ -48,6 +60,12 @@
     border-radius: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.04);
   }
+
+  .logo-lumina {
+    font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+  }
 }
 
 @keyframes toast-in {
@@ -63,4 +81,12 @@
 
 .toast-enter {
   animation: toast-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cart-slide-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.cart-slide-in {
+  animation: cart-slide-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
