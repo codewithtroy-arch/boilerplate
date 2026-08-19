@@ -8,12 +8,14 @@ const display = Cormorant_Garamond({
   weight: ['400', '500', '600', '700'],
   style: ['normal', 'italic'],
   variable: '--font-display',
+  display: 'swap',
 });
 
 const body = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600'],
   variable: '--font-body',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -37,7 +39,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
-      <body className="min-h-screen bg-marble font-body text-ink antialiased dark:bg-[#121110] dark:text-[#f2f0ed]" style={{ fontFamily: "var(--font-body), Inter, system-ui, sans-serif" }}>
+      <body
+        className={`${body.className} min-h-screen bg-marble text-ink antialiased dark:bg-[#121110] dark:text-[#f2f0ed]`}
+      >
         {children}
         <ServiceWorkerRegister />
       </body>

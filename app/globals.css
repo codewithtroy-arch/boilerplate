@@ -20,11 +20,19 @@
   }
 
   body {
-    font-family: var(--font-body), 'Inter', system-ui, sans-serif;
+    font-family: var(--font-body), 'Inter', system-ui, -apple-system, sans-serif;
   }
 
-  .font-display {
-    font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif !important;
+  /* All display headings use Cormorant Garamond */
+  h1, h2, h3, h4,
+  .font-display,
+  .logo-lumina {
+    font-family: var(--font-display), 'Cormorant Garamond', Georgia, 'Times New Roman', serif !important;
+  }
+
+  .logo-lumina {
+    font-weight: 600;
+    letter-spacing: 0.18em;
   }
 }
 
@@ -36,13 +44,15 @@
     background-attachment: fixed;
     background-repeat: no-repeat;
     position: relative;
+    isolation: isolate; /* own stack without trapping fixed UI incorrectly */
   }
   .dark .marble-bg {
     background-image: url('/images/marble-dark.jpg');
   }
+  /* Soft overlay only — do NOT force z-index on every child (that buried the cart under footer) */
   .marble-bg::before {
     content: '';
-    position: fixed;
+    position: absolute;
     inset: 0;
     background: rgba(249, 247, 245, 0.72);
     pointer-events: none;
@@ -51,20 +61,10 @@
   .dark .marble-bg::before {
     background: rgba(18, 17, 16, 0.78);
   }
-  .marble-bg > * {
-    position: relative;
-    z-index: 1;
-  }
 
   .label-card {
     border-radius: 1rem;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.04);
-  }
-
-  .logo-lumina {
-    font-family: var(--font-display), 'Cormorant Garamond', Georgia, serif;
-    font-weight: 600;
-    letter-spacing: 0.18em;
   }
 }
 

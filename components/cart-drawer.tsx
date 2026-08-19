@@ -96,7 +96,7 @@ export function CartDrawer({
       {/* Floating bag — Lumina style */}
       <button
         onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 z-40 flex h-14 items-center gap-2.5 rounded-full bg-pink px-5 text-sm font-medium text-white shadow-[0_8px_28px_rgba(232,154,170,0.45)] transition-all hover:scale-105 hover:bg-pink-dark"
+        className="fixed bottom-6 right-6 z-[200] flex h-14 items-center gap-2.5 rounded-full bg-pink px-5 text-sm font-medium text-white shadow-[0_8px_28px_rgba(232,154,170,0.45)] transition-all hover:scale-105 hover:bg-pink-dark"
         aria-label="Open bag"
       >
         <svg
@@ -122,7 +122,7 @@ export function CartDrawer({
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex justify-end">
+        <div className="fixed inset-0 z-[210] flex justify-end">
           <div
             className="absolute inset-0 bg-black/40 backdrop-blur-[2px]"
             onClick={() => setOpen(false)}

@@ -153,7 +153,7 @@ export default async function CatalogPage() {
   return (
     <CartProvider>
       <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" />
-      <div className="marble-bg min-h-screen">
+      <div className="marble-bg min-h-screen pb-28">
         <AnnouncementBar
           text={
             settings.announcement_text ||
