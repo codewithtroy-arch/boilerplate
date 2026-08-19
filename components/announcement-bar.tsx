@@ -13,15 +13,15 @@ export function AnnouncementBar({ text }: { text: string | null }) {
   if (!text || dismissed) return null;
 
   return (
-    <div className="relative flex items-center justify-center bg-ink px-10 py-2.5 text-center text-xs font-medium text-marble dark:bg-pink-dark dark:text-[#1a1510]">
-      {text}
+    <div className="relative z-40 flex items-center justify-center bg-ink px-12 py-2.5 text-center text-[12px] font-medium tracking-wide text-marble dark:bg-pink-dark dark:text-[#1a1510]">
+      <span className="max-w-3xl">{text}</span>
       <button
         onClick={() => {
           setDismissed(true);
           sessionStorage.setItem('announcement-dismissed', 'true');
         }}
-        aria-label="Dismiss"
-        className="absolute right-3 text-base leading-none"
+        aria-label="Dismiss announcement"
+        className="absolute right-4 flex h-6 w-6 items-center justify-center rounded-full text-base leading-none opacity-70 transition-opacity hover:opacity-100"
       >
         ×
       </button>
