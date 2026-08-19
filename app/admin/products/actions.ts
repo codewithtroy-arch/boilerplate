@@ -35,6 +35,7 @@ export async function addProduct(formData: FormData) {
   const price = Number(formData.get('price'));
   const description = String(formData.get('description') || '').trim();
   const stockQuantity = Number(formData.get('stock_quantity')) || 20;
+  const category = String(formData.get('category') || 'other');
   const imageFile = formData.get('image') as File | null;
 
   if (!name || !price || price <= 0) return;
@@ -46,6 +47,7 @@ export async function addProduct(formData: FormData) {
     price,
     description: description || null,
     stock_quantity: stockQuantity,
+    category,
     image_url: imageUrl,
   });
 
@@ -64,6 +66,7 @@ export async function updateProduct(formData: FormData) {
   const price = Number(formData.get('price'));
   const stockQuantity = Number(formData.get('stock_quantity'));
   const inStock = formData.get('in_stock') === 'on';
+  const category = String(formData.get('category') || 'other');
   const imageFile = formData.get('image') as File | null;
 
   if (!id || !name || !price || price <= 0) return;
@@ -73,6 +76,7 @@ export async function updateProduct(formData: FormData) {
     price,
     in_stock: inStock,
     stock_quantity: stockQuantity,
+    category,
   };
 
   // Only overwrite the image if a new one was actually chosen — leaves

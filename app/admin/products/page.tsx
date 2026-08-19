@@ -18,7 +18,7 @@ export default async function AdminProductsPage() {
 
   const { data } = await supabase
     .from('products')
-    .select('id, name, price, in_stock, stock_quantity, image_url')
+    .select('id, name, price, in_stock, stock_quantity, image_url, category')
     .order('created_at', { ascending: false });
 
   const products = data ?? [];
@@ -98,6 +98,17 @@ export default async function AdminProductsPage() {
                 defaultValue={product.price}
                 className="w-24 rounded-md border border-ink/15 px-3 py-2 text-sm"
               />
+              <select
+                name="category"
+                defaultValue={product.category ?? 'other'}
+                className="rounded-md border border-ink/15 px-2 py-2 text-xs"
+              >
+                <option value="essence">Essence</option>
+                <option value="serum">Serum</option>
+                <option value="cream">Cream</option>
+                <option value="cleanser">Cleanser</option>
+                <option value="other">Other</option>
+              </select>
               <div className="flex flex-col items-start">
                 <input
                   name="stock_quantity"

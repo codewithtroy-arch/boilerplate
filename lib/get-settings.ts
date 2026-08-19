@@ -5,6 +5,7 @@ export type Settings = {
   tagline: string;
   whatsapp_number: string | null;
   about_text: string;
+  announcement_text: string | null;
 };
 
 const DEFAULTS: Settings = {
@@ -12,13 +13,14 @@ const DEFAULTS: Settings = {
   tagline: 'Quality you can trust',
   whatsapp_number: null,
   about_text: "We're a small business dedicated to quality products and honest service.",
+  announcement_text: null,
 };
 
 export async function getSettings(): Promise<Settings> {
   const supabase = createClient();
   const { data } = await supabase
     .from('settings')
-    .select('business_name, tagline, whatsapp_number, about_text')
+    .select('business_name, tagline, whatsapp_number, about_text, announcement_text')
     .eq('id', 1)
     .single();
 

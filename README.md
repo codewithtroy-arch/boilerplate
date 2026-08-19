@@ -50,6 +50,13 @@ Push to GitHub, import the repo on Vercel (free Hobby tier), add the same
 two env vars there, set `NEXT_PUBLIC_SITE_URL` to your Vercel URL, and add
 that URL's `/auth/callback` to Supabase's redirect list.
 
+## Filter chips, announcement bar, trust badges, Quick View
+
+**Setup:** run `supabase/filters_and_announcement_schema.sql` in
+Supabase's SQL Editor (no placeholders — adds `category` to products and
+`announcement_text` to settings). Existing products default to category
+`other` until you set a real one in `/admin/products`.
+
 ## Real product ratings (no fake numbers)
 
 The uploaded design had star ratings, but they were fabricated demo
@@ -86,24 +93,48 @@ with.
 - Dark mode toggle (🌙/☀️ in the nav), remembers your preference
 - Marble page background with light/dark variants
 - Sticky glass nav, mobile hamburger menu
+- Announcement bar — dismissible, editable in `/admin/settings` (empty by
+  default; add text there to turn it on)
 - Hero section using the uploaded hero photo
+- Trust badges row (100% Original / Verified Seller / WhatsApp Support)
+- **Category filter chips — functional, not decorative.** Products now
+  have a real `category` field (set in `/admin/products`), and the chips
+  filter your actual catalog by it.
+- **Quick View modal** — clicking a product photo opens a real modal with
+  its full description, price, and rating, pulled from your actual data
 - Product cards in the original style (alternating pink/sage "Add to
   Cart" buttons)
 - Toast notification ("Added to bag") on every add-to-cart
 - Cart drawer in the original "Your Bag" layout, with our real
   pay-then-WhatsApp checkout flow inside it
+- Real star ratings (see "Real product ratings" above)
 - Footer, About, and Contact sections restyled to match
 
-**Deliberately left out** (the original had a lot — these didn't make the
-cut yet, ask if you want any built properly):
-- Category filter chips — the demo's categories didn't match our real
-  product data
-- Ingredients section, Routine section, Blog section, Newsletter signup,
-  Quick View modal, floating mobile cart button (redundant with the Bag
-  button already in the nav)
-
-(Star ratings *are* now built — see "Real product ratings" above — using
-real reviews instead of the demo's fake numbers.)
+**Still deliberately left out**, with the actual reason why:
+- **Ingredients section, Routine section** — the original's copy makes
+  specific skincare claims. Writing "clean formulas" or ingredient
+  benefit copy for products I don't have real formulation data on would
+  mean putting claims in your business's voice that may not be true.
+  Buildable once you give me real copy to work with, or you can write it
+  directly in a new admin-editable field, same pattern as About.
+- **Blog section** — the original had fake posts with fake dates. I
+  won't fabricate editorial content posing as real posts. Buildable for
+  real once you have actual posts to publish.
+- **Newsletter signup** — skipped for now since it needs its own storage
+  + a place to view signups in admin; happy to build it properly as a
+  real feature, just didn't want to add a form that silently goes
+  nowhere.
+- **"Cruelty Free" / "Dermatologist Tested" trust badges** — the
+  original's exact badges are specific certifications. I used generic
+  ones we already know are true (100% Original, Verified Seller) instead
+  of claiming certifications your business may not actually have. Swap
+  them in `app/catalog/page.tsx`'s `TRUST_BADGES` list if they're real
+  for you.
+- **A second floating mobile-only cart button** — the original has one
+  in the nav *and* a separate floating one on mobile. That's a redundant
+  pattern (two buttons doing the same thing), so I kept just the one
+  floating Bag button that already works on every screen size. Say the
+  word if you want the exact duplicate anyway.
 
 **One real photo is already wired up:** run
 `supabase/assign_lumina_photo.sql` — it matches the uploaded

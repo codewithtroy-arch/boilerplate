@@ -54,6 +54,18 @@ export function AddProductForm() {
         />
       </div>
 
+      <select
+        name="category"
+        defaultValue="other"
+        className="rounded-md border border-ink/15 px-3 py-2 text-sm"
+      >
+        <option value="essence">Essence</option>
+        <option value="serum">Serum</option>
+        <option value="cream">Cream</option>
+        <option value="cleanser">Cleanser</option>
+        <option value="other">Other</option>
+      </select>
+
       <textarea
         name="description"
         placeholder="Short description (optional)"

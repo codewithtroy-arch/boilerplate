@@ -10,6 +10,7 @@ export async function updateSettings(formData: FormData) {
   const tagline = String(formData.get('tagline') || '').trim();
   const whatsappNumber = String(formData.get('whatsapp_number') || '').trim();
   const aboutText = String(formData.get('about_text') || '').trim();
+  const announcementText = String(formData.get('announcement_text') || '').trim();
 
   if (!businessName) return;
 
@@ -20,6 +21,7 @@ export async function updateSettings(formData: FormData) {
       tagline,
       whatsapp_number: whatsappNumber || null,
       about_text: aboutText,
+      announcement_text: announcementText || null,
       updated_at: new Date().toISOString(),
     })
     .eq('id', 1);

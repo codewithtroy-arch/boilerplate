@@ -71,6 +71,19 @@ export default async function AdminSettingsPage() {
           />
         </div>
 
+        <div>
+          <label className="text-xs text-muted-foreground">
+            Announcement bar (optional — shown as a dismissible strip at the
+            very top of your shop, e.g. a promo or delivery note)
+          </label>
+          <input
+            name="announcement_text"
+            defaultValue={settings.announcement_text ?? ''}
+            placeholder="e.g. Free delivery on orders over ₦20,000"
+            className="mt-1 w-full rounded-md border border-ink/15 px-3 py-2 text-sm"
+          />
+        </div>
+
         <button
           type="submit"
           className="self-start rounded-md bg-ink px-4 py-2 text-sm font-medium text-paper"

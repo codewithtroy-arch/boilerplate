@@ -6,6 +6,7 @@ import { ProductGrid } from '@/components/product-grid';
 import { CartDrawer } from '@/components/cart-drawer';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { MobileMenu } from '@/components/mobile-menu';
+import { AnnouncementBar } from '@/components/announcement-bar';
 import { Toast } from '@/components/toast';
 import Script from 'next/script';
 
@@ -20,12 +21,18 @@ const NAV_LINKS = [
   { href: '#contact', label: 'Contact' },
 ];
 
+const TRUST_BADGES = [
+  { icon: '✓', label: '100% Original' },
+  { icon: '✓', label: 'Verified Seller' },
+  { icon: '💬', label: 'WhatsApp Support' },
+];
+
 export default async function CatalogPage() {
   const supabase = createClient();
   const [{ data: products }, { data: reviews }, settings] = await Promise.all([
     supabase
       .from('products')
-      .select('id, name, price, image_url')
+      .select('id, name, price, image_url, category, description')
       .eq('in_stock', true)
       .order('created_at', { ascending: false }),
     supabase.from('reviews').select('product_id, rating'),
@@ -55,6 +62,8 @@ export default async function CatalogPage() {
     <CartProvider>
       <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" />
       <div className="marble-bg min-h-screen pb-28">
+        <AnnouncementBar text={settings.announcement_text} />
+
         {/* Nav */}
         <nav className="sticky top-0 z-30 flex h-[64px] items-center justify-between border-b border-black/5 bg-white/90 px-6 backdrop-blur-md dark:border-white/5 dark:bg-[#1c1b1a]/90">
           <span className="font-display text-2xl tracking-wide text-ink dark:text-[#f2f0ed]">
@@ -109,6 +118,19 @@ export default async function CatalogPage() {
               priority
             />
           </div>
+        </section>
+
+        {/* Trust */}
+        <section className="flex flex-wrap justify-center gap-x-10 gap-y-3 border-y border-black/5 px-6 py-6 dark:border-white/5">
+          {TRUST_BADGES.map((badge) => (
+            <div
+              key={badge.label}
+              className="flex items-center gap-2 text-sm text-ink dark:text-[#f2f0ed]"
+            >
+              <span>{badge.icon}</span>
+              {badge.label}
+            </div>
+          ))}
         </section>
 
         {/* Products */}
