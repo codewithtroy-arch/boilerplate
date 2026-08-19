@@ -1,17 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useTransition } from 'react';
+import { submitNewsletterSignup } from '@/lib/newsletter-actions';
 
 export function NewsletterForm() {
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
+  const [error, setError] = useState('');
+  const [isPending, startTransition] = useTransition();
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!email.includes('@')) return;
-    setDone(true);
-    setEmail('');
-    setTimeout(() => setDone(false), 3000);
+    setError('');
+
+    startTransition(async () => {
+      const result = await submitNewsletterSignup(email);
+      if (result.error) {
+        setError(result.error);
+        return;
+      }
+      setDone(true);
+      setEmail('');
+      setTimeout(() => setDone(false), 3000);
+    });
   }
 
   return (
@@ -29,10 +41,12 @@ export function NewsletterForm() {
       />
       <button
         type="submit"
-        className="rounded-full bg-pink px-7 py-4 text-sm font-medium text-white transition-colors hover:bg-pink-dark whitespace-nowrap"
+        disabled={isPending}
+        className="rounded-full bg-pink px-7 py-4 text-sm font-medium text-white transition-colors hover:bg-pink-dark whitespace-nowrap disabled:opacity-60"
       >
-        {done ? 'Subscribed ✓' : 'Subscribe'}
+        {done ? 'Subscribed ✓' : isPending ? 'Saving...' : 'Subscribe'}
       </button>
+      {error && <p className="text-xs text-blush sm:absolute sm:mt-14">{error}</p>}
     </form>
   );
 }

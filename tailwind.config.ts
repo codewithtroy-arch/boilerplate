@@ -35,8 +35,8 @@ const config: Config = {
         blush: '#D64545', // functional alert/warning red
       },
       fontFamily: {
-        display: ['var(--font-display)'],
-        body: ['var(--font-body)'],
+        display: ['var(--font-display)', 'Cormorant Garamond', 'Georgia', 'serif'],
+        body: ['var(--font-body)', 'Inter', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
         lg: '1rem',
