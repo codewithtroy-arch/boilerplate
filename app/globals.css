@@ -49,14 +49,18 @@
   .dark .marble-bg {
     background-image: url('/images/marble-dark.jpg');
   }
-  /* Soft overlay only — do NOT force z-index on every child (that buried the cart under footer) */
+  /* Soft overlay only — do NOT force z-index/position on every child
+     (that buried the fixed cart button under the footer). A negative
+     z-index here (not 0) is required: at z-index:0, this positioned
+     overlay would paint AFTER plain unpositioned siblings per CSS
+     stacking rules, covering all your content in a translucent veil. */
   .marble-bg::before {
     content: '';
     position: absolute;
     inset: 0;
     background: rgba(249, 247, 245, 0.72);
     pointer-events: none;
-    z-index: 0;
+    z-index: -1;
   }
   .dark .marble-bg::before {
     background: rgba(18, 17, 16, 0.78);

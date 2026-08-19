@@ -28,6 +28,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <Link href="/admin/settings" className="text-sm font-medium text-ink">
           Settings
         </Link>
+        <Link href="/admin/newsletter" className="text-sm font-medium text-ink">
+          Newsletter
+        </Link>
       </nav>
       {children}
     </div>

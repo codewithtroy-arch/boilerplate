@@ -79,6 +79,16 @@ that becomes a problem, the fix is tightening
 `supabase/reviews_schema.sql`'s insert policy to check against a real
 order — ask if you want that built.
 
+## Newsletter signups
+
+The "Join the Glow List" form on the storefront saves real emails to a
+`newsletter_signups` table. View and export them at `/admin/newsletter`
+(linked in the admin nav) — includes a CSV download for pasting into
+whatever you actually send emails from later (this app doesn't send
+newsletters itself, just collects who wants one).
+
+**Setup:** run `supabase/newsletter_schema.sql` in Supabase's SQL Editor.
+
 ## Lumina design integration
 
 The catalog's visual design was ported from a custom HTML/CSS site you
