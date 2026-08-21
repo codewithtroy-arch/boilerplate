@@ -89,6 +89,32 @@ newsletters itself, just collects who wants one).
 
 **Setup:** run `supabase/newsletter_schema.sql` in Supabase's SQL Editor.
 
+## Everything moved to admin
+
+Testimonials, press mentions, Star Ingredients, and the Daily Ritual
+section are now all editable from `/admin/settings` — no code, no
+redeploy. The Journal/blog section is a real list, managed at
+`/admin/journal`.
+
+- **Testimonials**: 3 quote+name+star-rating slots. Any slot left blank
+  is simply skipped — the whole "Loved by thousands" section disappears
+  if all 3 are empty, rather than showing fake ones.
+- **Press mentions**: comma-separated list (e.g. "Vogue, Elle"). Empty by
+  default — the "As seen in" bar only shows once you add real press
+  coverage.
+- **Star Ingredients**: 4 icon+title+description slots, same
+  empty-means-hidden pattern.
+- **Daily Ritual**: 3 step title+description slots. If you reference real
+  product names here, make sure they actually exist in `/admin/products`
+  so customers can find them under Shop.
+- **Journal**: `/admin/journal` — add/delete real posts (title, optional
+  tag, excerpt). The section on your catalog is hidden entirely until you
+  have at least one real post — no fake dated articles.
+
+**Setup:** run `supabase/content_sections_schema.sql` in Supabase's SQL
+Editor (no placeholders — adds all the new settings columns plus a real
+`posts` table).
+
 ## Lumina design integration
 
 The catalog's visual design was ported from a custom HTML/CSS site you

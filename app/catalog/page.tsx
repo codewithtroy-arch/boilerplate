@@ -22,108 +22,23 @@ const NAV_LINKS = [
   { href: '#contact', label: 'Contact' },
 ];
 
-const TRUST_BADGES = [
-  {
-    label: 'Clean Formulas',
-    path: 'M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z',
-  },
-  {
-    label: 'Cruelty Free',
-    path: 'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z',
-  },
-  {
-    label: 'Verified Seller',
-    path: 'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
-  },
-  {
-    label: 'WhatsApp Support',
-    path: 'M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z M21 12c0 4.97-4.03 9-9 9a8.96 8.96 0 0 1-4.27-1.07L3 21l1.13-4.6A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9Z',
-  },
-];
-
-const REVIEWS = [
-  {
-    text: 'The Vitamin C serum completely transformed my dull winter skin. I’ve never received so many compliments.',
-    author: 'Sophia M.',
-  },
-  {
-    text: 'Night Repair Cream is pure magic. Woke up with plump, glowing skin after just one week.',
-    author: 'Elena R.',
-  },
-  {
-    text: 'Finally a clean brand that actually works. The Hydrating Essence is now my holy grail.',
-    author: 'Amara K.',
-  },
-];
-
-const INGREDIENTS = [
-  {
-    icon: '✦',
-    title: 'Vitamin C',
-    desc: 'Brightens, protects, and visibly even tone with stable, potent ascorbic acid.',
-  },
-  {
-    icon: '✧',
-    title: 'Hyaluronic Acid',
-    desc: 'Multi-weight molecules that deeply hydrate and plump from within.',
-  },
-  {
-    icon: '☾',
-    title: 'Retinol',
-    desc: 'Encapsulated retinol that renews overnight for smoother, firmer skin.',
-  },
-  {
-    icon: '❀',
-    title: 'Botanical Complex',
-    desc: 'Rare plant extracts that calm, nourish, and support the skin barrier.',
-  },
-];
-
-const ROUTINE = [
-  {
-    step: '01',
-    title: 'Cleanse',
-    desc: 'Start with our Hydrating Essence to gently purify and prep the skin.',
-  },
-  {
-    step: '02',
-    title: 'Treat',
-    desc: 'Apply Vitamin C Serum for brightening and antioxidant protection.',
-  },
-  {
-    step: '03',
-    title: 'Nourish',
-    desc: 'Seal with Night Repair Cream to restore and renew while you sleep.',
-  },
-];
-
-const JOURNAL = [
-  {
-    tag: 'Science',
-    title: 'Why Vitamin C is the ultimate glow booster',
-    desc: 'Discover how this powerful antioxidant transforms dull skin in just weeks.',
-  },
-  {
-    tag: 'Ritual',
-    title: 'The 3-step night routine for radiant mornings',
-    desc: 'Simple steps that deliver visible results while you rest.',
-  },
-  {
-    tag: 'Ingredients',
-    title: 'Meet our star botanicals',
-    desc: 'Rare extracts chosen for purity, potency, and skin compatibility.',
-  },
+const TRUST_BADGE_ICONS = [
+  'M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z',
+  'M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z',
+  'M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z',
+  'M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z M21 12c0 4.97-4.03 9-9 9a8.96 8.96 0 0 1-4.27-1.07L3 21l1.13-4.6A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9Z',
 ];
 
 export default async function CatalogPage() {
   const supabase = createClient();
-  const [{ data: products }, { data: reviews }, settings] = await Promise.all([
+  const [{ data: products }, { data: reviews }, { data: posts }, settings] = await Promise.all([
     supabase
       .from('products')
       .select('id, name, price, image_url, category, description')
       .eq('in_stock', true)
       .order('created_at', { ascending: false }),
     supabase.from('reviews').select('product_id, rating'),
+    supabase.from('posts').select('id, tag, title, excerpt').order('created_at', { ascending: false }).limit(3),
     getSettings(),
   ]);
 
@@ -149,6 +64,30 @@ export default async function CatalogPage() {
   const about =
     settings.about_text ||
     'Born from a passion for clean science and nature’s most potent botanicals, we create high-performance skincare that delivers visible radiance without compromise.';
+
+  // Empty slots are simply left out — no fallback fake content.
+  const testimonials = [
+    { quote: settings.testimonial_1_quote, name: settings.testimonial_1_name, rating: settings.testimonial_1_rating },
+    { quote: settings.testimonial_2_quote, name: settings.testimonial_2_name, rating: settings.testimonial_2_rating },
+    { quote: settings.testimonial_3_quote, name: settings.testimonial_3_name, rating: settings.testimonial_3_rating },
+  ].filter((t) => t.quote && t.name);
+
+  const pressMentions = settings.press_mentions
+    ? settings.press_mentions.split(',').map((s) => s.trim()).filter(Boolean)
+    : [];
+
+  const ingredients = [
+    { icon: settings.ingredient_1_icon, title: settings.ingredient_1_title, desc: settings.ingredient_1_desc },
+    { icon: settings.ingredient_2_icon, title: settings.ingredient_2_title, desc: settings.ingredient_2_desc },
+    { icon: settings.ingredient_3_icon, title: settings.ingredient_3_title, desc: settings.ingredient_3_desc },
+    { icon: settings.ingredient_4_icon, title: settings.ingredient_4_title, desc: settings.ingredient_4_desc },
+  ].filter((i) => i.title);
+
+  const ritual = [
+    { step: '01', title: settings.ritual_1_title, desc: settings.ritual_1_desc },
+    { step: '02', title: settings.ritual_2_title, desc: settings.ritual_2_desc },
+    { step: '03', title: settings.ritual_3_title, desc: settings.ritual_3_desc },
+  ].filter((r) => r.title);
 
   return (
     <CartProvider>
@@ -208,9 +147,7 @@ export default async function CatalogPage() {
               </p>
 
               <h1 className="font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink dark:text-[#f2f0ed] sm:text-5xl lg:text-[3.5rem]">
-                Illuminate
-                <br />
-                Your Radiance
+                {settings.hero_headline}
               </h1>
 
               <div className="mt-4 h-px w-12 bg-pink-dark/70" />
@@ -277,9 +214,14 @@ export default async function CatalogPage() {
           <div className="mx-auto max-w-6xl">
             {/* Trust badges */}
             <div className="mb-14 grid grid-cols-2 gap-4 sm:grid-cols-4">
-              {TRUST_BADGES.map((badge) => (
+              {[
+                settings.trust_badge_1,
+                settings.trust_badge_2,
+                settings.trust_badge_3,
+                settings.trust_badge_4,
+              ].map((label, i) => (
                 <div
-                  key={badge.label}
+                  key={label}
                   className="flex flex-col items-center gap-3 rounded-2xl border border-black/[0.04] bg-white/60 px-4 py-6 text-center backdrop-blur-sm dark:border-white/[0.06] dark:bg-[#1e1d1c]/50"
                 >
                   <svg
@@ -290,58 +232,67 @@ export default async function CatalogPage() {
                     stroke="currentColor"
                     className="h-7 w-7 text-pink-dark"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d={badge.path} />
+                    <path strokeLinecap="round" strokeLinejoin="round" d={TRUST_BADGE_ICONS[i]} />
                   </svg>
                   <span className="text-[13px] font-medium tracking-wide text-ink dark:text-[#f2f0ed]">
-                    {badge.label}
+                    {label}
                   </span>
                 </div>
               ))}
             </div>
 
-            <div className="mb-8 text-center">
-              <h2 className="font-display text-3xl font-medium text-ink dark:text-[#f2f0ed] sm:text-4xl">
-                Loved by thousands
-              </h2>
-            </div>
-
-            <div className="grid gap-5 md:grid-cols-3">
-              {REVIEWS.map((review) => (
-                <div
-                  key={review.author}
-                  className="rounded-2xl border border-black/[0.04] bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] dark:border-white/[0.06] dark:bg-[#1e1d1c]"
-                >
-                  <div className="mb-3 text-sm tracking-wide text-[#f5c542]">★★★★★</div>
-                  <p className="text-[15px] leading-relaxed text-ink/80 dark:text-[#f2f0ed]/85">
-                    “{review.text}”
-                  </p>
-                  <p className="mt-4 text-xs font-medium tracking-wide text-text-light dark:text-[#a8a49e]">
-                    — {review.author}
-                  </p>
+            {testimonials.length > 0 && (
+              <>
+                <div className="mb-8 text-center">
+                  <h2 className="font-display text-3xl font-medium text-ink dark:text-[#f2f0ed] sm:text-4xl">
+                    Loved by thousands
+                  </h2>
                 </div>
-              ))}
-            </div>
 
-            {/* As seen in */}
-            <div className="mt-14 text-center">
-              <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-text-light dark:text-[#a8a49e]">
-                As seen in
-              </p>
-              <div className="flex flex-wrap items-center justify-center gap-8 md:gap-14">
-                {['VOGUE', 'ELLE', 'Byrdie', 'Allure'].map((name) => (
-                  <span
-                    key={name}
-                    className="font-display text-xl tracking-[0.15em] text-ink/30 dark:text-[#f2f0ed]/25 sm:text-2xl"
-                  >
-                    {name}
-                  </span>
-                ))}
+                <div className="grid gap-5 md:grid-cols-3">
+                  {testimonials.map((review) => (
+                    <div
+                      key={review.name}
+                      className="rounded-2xl border border-black/[0.04] bg-white p-6 shadow-[0_4px_24px_rgba(0,0,0,0.04)] transition-shadow hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] dark:border-white/[0.06] dark:bg-[#1e1d1c]"
+                    >
+                      <div className="mb-3 text-sm tracking-wide text-[#f5c542]">
+                        {'★'.repeat(review.rating)}
+                        {'☆'.repeat(5 - review.rating)}
+                      </div>
+                      <p className="text-[15px] leading-relaxed text-ink/80 dark:text-[#f2f0ed]/85">
+                        “{review.quote}”
+                      </p>
+                      <p className="mt-4 text-xs font-medium tracking-wide text-text-light dark:text-[#a8a49e]">
+                        — {review.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {/* As seen in — only shown if real press mentions are set */}
+            {pressMentions.length > 0 && (
+              <div className="mt-14 text-center">
+                <p className="mb-5 text-[11px] font-medium uppercase tracking-[0.2em] text-text-light dark:text-[#a8a49e]">
+                  As seen in
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-8 md:gap-14">
+                  {pressMentions.map((name) => (
+                    <span
+                      key={name}
+                      className="font-display text-xl tracking-[0.15em] text-ink/30 dark:text-[#f2f0ed]/25 sm:text-2xl"
+                    >
+                      {name}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
 
-        {/* ─── Star Ingredients ─── */}
+        {ingredients.length > 0 && (
         <section id="ingredients" className="scroll-mt-16 px-6 py-16 md:px-12">
           <div className="mx-auto max-w-6xl">
             <div className="mb-3 text-center">
@@ -354,7 +305,7 @@ export default async function CatalogPage() {
             </div>
 
             <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {INGREDIENTS.map((item) => (
+              {ingredients.map((item) => (
                 <div
                   key={item.title}
                   className="rounded-2xl border border-black/[0.04] bg-white p-7 text-center shadow-[0_4px_20px_rgba(0,0,0,0.03)] transition-all hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(0,0,0,0.07)] dark:border-white/[0.06] dark:bg-[#1e1d1c]"
@@ -373,6 +324,7 @@ export default async function CatalogPage() {
             </div>
           </div>
         </section>
+        )}
 
         {/* ─── About ─── */}
         <section id="about" className="scroll-mt-16 px-6 py-16 md:px-12">
@@ -422,7 +374,8 @@ export default async function CatalogPage() {
           </div>
         </section>
 
-        {/* ─── Daily Ritual — exact Lumina layout ─── */}
+        {/* ─── Daily Ritual ─── */}
+        {ritual.length > 0 && (
         <section
           id="routine"
           className="scroll-mt-16 border-y border-black/5 bg-white/50 py-20 backdrop-blur-sm dark:border-white/5 dark:bg-[#1e1d1c]/40"
@@ -441,7 +394,7 @@ export default async function CatalogPage() {
             </div>
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-8">
-              {ROUTINE.map((step) => (
+              {ritual.map((step) => (
                 <div key={step.step} className="px-4 py-6 text-center">
                   <div className="font-display text-[42px] font-medium leading-none text-pink opacity-85 dark:text-pink-dark">
                     {step.step}
@@ -457,8 +410,10 @@ export default async function CatalogPage() {
             </div>
           </div>
         </section>
+        )}
 
-        {/* ─── Journal ─── */}
+        {/* ─── Journal — real posts from /admin/journal ─── */}
+        {(posts ?? []).length > 0 && (
         <section id="blog" className="scroll-mt-16 px-6 py-16 md:px-12">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 flex items-end justify-between gap-4">
@@ -468,25 +423,28 @@ export default async function CatalogPage() {
             </div>
 
             <div className="grid gap-5 md:grid-cols-3">
-              {JOURNAL.map((post) => (
+              {(posts ?? []).map((post) => (
                 <article
-                  key={post.title}
+                  key={post.id}
                   className="group cursor-default rounded-2xl border border-black/[0.04] bg-white p-7 transition-all hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,0,0,0.08)] dark:border-white/[0.06] dark:bg-[#1e1d1c]"
                 >
-                  <span className="inline-block rounded-full bg-pink-soft px-3 py-1 text-[11px] font-medium tracking-wide text-pink-dark dark:bg-white/10">
-                    {post.tag}
-                  </span>
+                  {post.tag && (
+                    <span className="inline-block rounded-full bg-pink-soft px-3 py-1 text-[11px] font-medium tracking-wide text-pink-dark dark:bg-white/10">
+                      {post.tag}
+                    </span>
+                  )}
                   <h3 className="mt-4 font-display text-xl font-medium leading-snug text-ink dark:text-[#f2f0ed]">
                     {post.title}
                   </h3>
                   <p className="mt-2 text-[14px] leading-relaxed text-text-light dark:text-[#a8a49e]">
-                    {post.desc}
+                    {post.excerpt}
                   </p>
                 </article>
               ))}
             </div>
           </div>
         </section>
+        )}
 
         {/* ─── Contact ─── */}
         <section id="contact" className="scroll-mt-16 px-6 py-16 md:px-12">
@@ -557,23 +515,47 @@ export default async function CatalogPage() {
                   radiance.
                 </p>
                 <div className="mt-5 flex gap-3.5">
-                  <a href="#" aria-label="Instagram" className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 3.75h9A3.75 3.75 0 0 1 20.25 7.5v9a3.75 3.75 0 0 1-3.75 3.75h-9A3.75 3.75 0 0 1 3.75 16.5v-9A3.75 3.75 0 0 1 7.5 3.75Z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75h.008v.008H17.25V6.75Z" />
-                    </svg>
-                  </a>
-                  <a href="#" aria-label="TikTok" className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 9v10.5a3 3 0 0 0 3 3 3 3 0 0 0 3-3V9m0 0V6.75A2.25 2.25 0 0 1 17.25 4.5h.75" />
-                    </svg>
-                  </a>
-                  <a href="#" aria-label="Pinterest" className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-3.75a.75.75 0 0 1-.75-.75V12a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-.75.75Z" />
-                    </svg>
-                  </a>
+                  {settings.instagram_url && (
+                    <a
+                      href={settings.instagram_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Instagram"
+                      className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 3.75h9A3.75 3.75 0 0 1 20.25 7.5v9a3.75 3.75 0 0 1-3.75 3.75h-9A3.75 3.75 0 0 1 3.75 16.5v-9A3.75 3.75 0 0 1 7.5 3.75Z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75h.008v.008H17.25V6.75Z" />
+                      </svg>
+                    </a>
+                  )}
+                  {settings.tiktok_url && (
+                    <a
+                      href={settings.tiktok_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="TikTok"
+                      className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 9v10.5a3 3 0 0 0 3 3 3 3 0 0 0 3-3V9m0 0V6.75A2.25 2.25 0 0 1 17.25 4.5h.75" />
+                      </svg>
+                    </a>
+                  )}
+                  {settings.pinterest_url && (
+                    <a
+                      href={settings.pinterest_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="Pinterest"
+                      className="text-ink/70 transition-opacity hover:opacity-100 dark:text-[#f2f0ed]/70"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-5 w-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-3.75a.75.75 0 0 1-.75-.75V12a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-.75.75Z" />
+                      </svg>
+                    </a>
+                  )}
                 </div>
               </div>
 
