@@ -98,5 +98,5 @@ export async function getSettings(): Promise<Settings> {
     .eq('id', 1)
     .single();
 
-  return data ? ({ ...DEFAULTS, ...data } as Settings) : DEFAULTS;
+  return data ? ({ ...DEFAULTS, ...(data as Partial<Settings>) } as Settings) : DEFAULTS;
 }
