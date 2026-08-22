@@ -8,7 +8,11 @@ import { AddProductForm } from './add-product-form';
 
 const LOW_STOCK_THRESHOLD = 5;
 
-export default async function AdminProductsPage() {
+export default async function AdminProductsPage({
+  searchParams,
+}: {
+  searchParams: { saved?: string; error?: string };
+}) {
   const { user, role } = await getCurrentProfile();
 
   if (!user) redirect('/login');
@@ -33,6 +37,17 @@ export default async function AdminProductsPage() {
       <p className="mt-1 text-sm text-muted-foreground">
         Changes here show up on your live catalog within a minute.
       </p>
+
+      {searchParams.saved && (
+        <div className="mt-4 rounded-md border border-cobalt/30 bg-cobalt/5 px-4 py-2 text-sm text-cobalt">
+          Saved.
+        </div>
+      )}
+      {searchParams.error && (
+        <div className="mt-4 rounded-md border border-blush/40 bg-blush/10 px-4 py-2 text-sm text-blush">
+          Couldn&apos;t save: {searchParams.error}
+        </div>
+      )}
 
       {lowStockCount > 0 && (
         <div className="mt-4 rounded-md border border-blush/40 bg-blush/10 px-4 py-2 text-sm text-blush">

@@ -1,14 +1,27 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { createServiceClient } from '@/lib/supabase/service';
 import { getCurrentProfile } from '@/lib/get-profile';
 
-async function uploadProductImage(file: File): Promise<string | null> {
-  if (!file || file.size === 0) return null;
+async function uploadProductImage(file: File): Promise<{ url: string | null; error: string | null }> {
+  if (!file || file.size === 0) return { url: null, error: null };
 
-  const service = createServiceClient();
+  let service;
+  try {
+    service = createServiceClient();
+  } catch (err) {
+    return {
+      url: null,
+      error:
+        err instanceof Error
+          ? `Image upload not configured: ${err.message}`
+          : 'Image upload not configured.',
+    };
+  }
+
   const ext = file.name.split('.').pop() || 'jpg';
   const path = `${crypto.randomUUID()}.${ext}`;
 
@@ -17,12 +30,11 @@ async function uploadProductImage(file: File): Promise<string | null> {
     .upload(path, file, { contentType: file.type, upsert: false });
 
   if (error) {
-    console.error('Image upload failed:', error);
-    return null;
+    return { url: null, error: `Image upload failed: ${error.message}` };
   }
 
   const { data } = service.storage.from('product-images').getPublicUrl(path);
-  return data.publicUrl;
+  return { url: data.publicUrl, error: null };
 }
 
 export async function addProduct(formData: FormData) {
@@ -38,11 +50,20 @@ export async function addProduct(formData: FormData) {
   const category = String(formData.get('category') || 'other');
   const imageFile = formData.get('image') as File | null;
 
-  if (!name || !price || price <= 0) return;
+  if (!name || !price || price <= 0) {
+    redirect('/admin/products?error=' + encodeURIComponent('Name and a valid price are required.'));
+  }
 
-  const imageUrl = imageFile ? await uploadProductImage(imageFile) : null;
+  let imageUrl: string | null = null;
+  if (imageFile && imageFile.size > 0) {
+    const result = await uploadProductImage(imageFile);
+    if (result.error) {
+      redirect('/admin/products?error=' + encodeURIComponent(result.error));
+    }
+    imageUrl = result.url;
+  }
 
-  await supabase.from('products').insert({
+  const { error } = await supabase.from('products').insert({
     name,
     price,
     description: description || null,
@@ -53,6 +74,11 @@ export async function addProduct(formData: FormData) {
 
   revalidatePath('/admin/products');
   revalidatePath('/catalog');
+
+  if (error) {
+    redirect('/admin/products?error=' + encodeURIComponent(error.message));
+  }
+  redirect('/admin/products?saved=true');
 }
 
 export async function updateProduct(formData: FormData) {
@@ -69,7 +95,9 @@ export async function updateProduct(formData: FormData) {
   const category = String(formData.get('category') || 'other');
   const imageFile = formData.get('image') as File | null;
 
-  if (!id || !name || !price || price <= 0) return;
+  if (!id || !name || !price || price <= 0) {
+    redirect('/admin/products?error=' + encodeURIComponent('Name and a valid price are required.'));
+  }
 
   const update: Record<string, unknown> = {
     name,
@@ -82,14 +110,22 @@ export async function updateProduct(formData: FormData) {
   // Only overwrite the image if a new one was actually chosen — leaves
   // the existing photo alone otherwise.
   if (imageFile && imageFile.size > 0) {
-    const imageUrl = await uploadProductImage(imageFile);
-    if (imageUrl) update.image_url = imageUrl;
+    const result = await uploadProductImage(imageFile);
+    if (result.error) {
+      redirect('/admin/products?error=' + encodeURIComponent(result.error));
+    }
+    if (result.url) update.image_url = result.url;
   }
 
-  await supabase.from('products').update(update).eq('id', id);
+  const { error } = await supabase.from('products').update(update).eq('id', id);
 
   revalidatePath('/admin/products');
   revalidatePath('/catalog');
+
+  if (error) {
+    redirect('/admin/products?error=' + encodeURIComponent(error.message));
+  }
+  redirect('/admin/products?saved=true');
 }
 
 export async function deleteProduct(formData: FormData) {
@@ -104,4 +140,5 @@ export async function deleteProduct(formData: FormData) {
 
   revalidatePath('/admin/products');
   revalidatePath('/catalog');
+  redirect('/admin/products?saved=true');
 }
