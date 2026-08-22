@@ -3,7 +3,11 @@ import { getCurrentProfile } from '@/lib/get-profile';
 import { getSettings } from '@/lib/get-settings';
 import { updateSettings } from './actions';
 
-export default async function AdminSettingsPage() {
+export default async function AdminSettingsPage({
+  searchParams,
+}: {
+  searchParams: { saved?: string; error?: string };
+}) {
   const { user, role } = await getCurrentProfile();
   if (!user) redirect('/login');
   if (role !== 'admin') redirect('/dashboard');
@@ -17,6 +21,17 @@ export default async function AdminSettingsPage() {
         Change these anytime — updates show up on your live shop within a
         minute.
       </p>
+
+      {searchParams.saved && (
+        <div className="mt-4 rounded-md border border-cobalt/30 bg-cobalt/5 px-4 py-2 text-sm text-cobalt">
+          Saved.
+        </div>
+      )}
+      {searchParams.error && (
+        <div className="mt-4 rounded-md border border-blush/40 bg-blush/10 px-4 py-2 text-sm text-blush">
+          Couldn&apos;t save: {searchParams.error}
+        </div>
+      )}
 
       <form
         action={updateSettings}

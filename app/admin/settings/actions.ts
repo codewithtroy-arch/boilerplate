@@ -1,6 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 
 function str(formData: FormData, key: string) {
@@ -11,13 +12,15 @@ export async function updateSettings(formData: FormData) {
   const supabase = createClient();
 
   const businessName = str(formData, 'business_name');
-  if (!businessName) return;
+  if (!businessName) {
+    redirect('/admin/settings?error=' + encodeURIComponent('Business name is required.'));
+  }
 
   const testimonial1Rating = Number(formData.get('testimonial_1_rating')) || 5;
   const testimonial2Rating = Number(formData.get('testimonial_2_rating')) || 5;
   const testimonial3Rating = Number(formData.get('testimonial_3_rating')) || 5;
 
-  await supabase
+  const { error } = await supabase
     .from('settings')
     .update({
       business_name: businessName,
@@ -72,4 +75,10 @@ export async function updateSettings(formData: FormData) {
 
   revalidatePath('/admin/settings');
   revalidatePath('/catalog');
+
+  if (error) {
+    redirect('/admin/settings?error=' + encodeURIComponent(error.message));
+  }
+
+  redirect('/admin/settings?saved=true');
 }
