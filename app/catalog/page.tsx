@@ -29,14 +29,38 @@ const TRUST_BADGE_ICONS = [
   'M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z M21 12c0 4.97-4.03 9-9 9a8.96 8.96 0 0 1-4.27-1.07L3 21l1.13-4.6A8.96 8.96 0 0 1 3 12c0-4.97 4.03-9 9-9s9 4.03 9 9Z',
 ];
 
-export default async function CatalogPage() {
+const PAGE_SIZE = 24;
+
+export default async function CatalogPage({
+  searchParams,
+}: {
+  searchParams: { category?: string; page?: string; search?: string };
+}) {
   const supabase = createClient();
-  const [{ data: products }, { data: reviews }, { data: posts }, settings] = await Promise.all([
-    supabase
-      .from('products')
-      .select('id, name, price, image_url, category, description')
-      .eq('in_stock', true)
-      .order('created_at', { ascending: false }),
+
+  const activeCategory = searchParams.category || 'all';
+  const searchQuery = (searchParams.search || '').trim();
+  const currentPage = Math.max(1, Number(searchParams.page) || 1);
+  const rangeStart = (currentPage - 1) * PAGE_SIZE;
+  const rangeEnd = rangeStart + PAGE_SIZE - 1;
+
+  let productsQuery = supabase
+    .from('products')
+    .select('id, name, price, image_url, category, description', { count: 'exact' })
+    .eq('in_stock', true)
+    .order('created_at', { ascending: false })
+    .range(rangeStart, rangeEnd);
+
+  if (activeCategory !== 'all') {
+    productsQuery = productsQuery.eq('category', activeCategory);
+  }
+  if (searchQuery) {
+    productsQuery = productsQuery.ilike('name', `%${searchQuery}%`);
+  }
+
+  const [{ data: products, count: totalCount }, { data: reviews }, { data: posts }, settings] =
+    await Promise.all([
+    productsQuery,
     supabase.from('reviews').select('product_id, rating'),
     supabase.from('posts').select('id, tag, title, excerpt').order('created_at', { ascending: false }).limit(3),
     getSettings(),
@@ -202,10 +226,16 @@ export default async function CatalogPage() {
                 </h2>
               </div>
               <span className="pb-1 text-xs text-text-light dark:text-[#a8a49e]">
-                {(products ?? []).length} products
+                {totalCount ?? 0} products
               </span>
             </div>
-            <ProductGrid products={productsWithRatings} />
+            <ProductGrid
+              products={productsWithRatings}
+              activeCategory={activeCategory}
+              searchQuery={searchQuery}
+              currentPage={currentPage}
+              totalPages={Math.max(1, Math.ceil((totalCount ?? 0) / PAGE_SIZE))}
+            />
           </div>
         </section>
 
